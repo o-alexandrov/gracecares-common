@@ -1,0 +1,12 @@
+{
+  "extends": "./node_modules/@10stars/config/tsconfig.base.json", // only relative paths and local node_modules are supported, see: https://github.com/Microsoft/TypeScript/issues/18865
+  "include": [
+    "./*.ts",
+    "./*/*",
+    "./*/src/**/*",
+    "./*/scripts/**/*",
+    "./*/types/**/*",
+    "./node_modules/vite/client.d.ts",
+    "./node_modules/vitest/globals.d.ts",
+  ]
+}

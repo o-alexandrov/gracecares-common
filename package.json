@@ -1,0 +1,21 @@
+{
+  "name": "common",
+  "private": true,
+  "workspaces": ["*"],
+  "engines": { "node": ">=22.0.0", "npm": ">=10.0.0" },
+  "scripts": {
+    "config": "tsx node_modules/.bin/config",
+    "prepare": "npm run config prepare",
+    "test": "CI=1 tsx node_modules/vitest/dist/cli",
+    "test:watch": "tsx node_modules/vitest/dist/cli"
+  },
+  "overrides": {
+    "@types/node": "^22.0.0",
+    "type-fest": "^4.0.0",
+    "openapi3-ts": "^4.2.1"
+  },
+  "dependencies": {
+    "@10stars/config": "^13.5.2",
+    "@gracecares-ai/tdd-unit-testing": "file:./tdd-unit-testing"
+  }
+}

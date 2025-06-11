@@ -1,0 +1,13 @@
+{
+  "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "eg2.tslint",
+    "zuoez02.tslint-snippets",
+    "dbaeumer.jshint",
+    "hookyqr.beautify",
+    "felipecaputo.git-project-manager",
+    "donjayamanne.githistory",
+    "ms-azuretools.vscode-docker"
+  ]
+}

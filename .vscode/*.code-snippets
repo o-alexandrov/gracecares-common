@@ -1,0 +1,33 @@
+// https://code.visualstudio.com/docs/editor/userdefinedsnippets
+{
+  // "EXAMPLE DESCRIPTION": {
+  //   "prefix": "classes",
+  //   "body": "const classes = useStyles({$1})",
+  //   "scope": "typescript,typescriptreact"
+  // }
+  "Log - Dir - Variable": {
+    "prefix": "dir",
+    "body": [
+      "console.log(`==============`)",
+      "console.log(`$1`)",
+      "console.dir($1, { depth: null })"
+    ],
+    "description": "Log server-side output to console"
+  },
+  "Import - tdd": {
+    "prefix": "itdd",
+    "body": "import * as tdd from \"@gracecares-ai/tdd-unit-testing\"",
+  },
+  "Import - commonHelpers": {
+    "prefix": "icommonHelpers",
+    "body": "import * as commonHelpers from \"@gracecares-ai/helpers\"",
+  },
+  "Import - StatusCodes": {
+    "prefix": "iStatusCodes",
+    "body": "import * as StatusCodes from \"http-status-codes\"",
+  },
+  "Import - type-fest": {
+    "prefix": "itype-fest",
+    "body": "import type * as TF from \"type-fest\"",
+  },
+}

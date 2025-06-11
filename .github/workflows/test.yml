@@ -1,0 +1,33 @@
+name: Test
+on:
+  pull_request:
+    types:
+      - opened # when a new PR is opened
+      - synchronize # when a new commit is pushed to the PR
+      - edited # to check if the base_ref (target branch) is changed
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=6144" # 6GB is based on the 7GB available; see https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-concurrency-to-cancel-any-in-progress-job-or-run
+#   - "github.ref" examples: "refs/heads/<branch_name>", "refs/pull/<pr_number>/merge", "refs/tags/<tag_name>"
+#   - "github.workflow" is the name of the workflow, example: "name" global value or path of the workflow file in the repo
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event.action != 'edited' || (github.event.action == 'edited' && github.event.changes.base.ref.from != '')
+    steps:
+      - uses: gracecares-ai/gh-action-setup@v1
+        with:
+          add-aws-vars-to-env: true
+      - uses: gracecares-ai/gh-action-configure-aws-cli@v1
+        with:
+          KEY_ID: ${{ vars[env.NAME_AWS_KEY_ID] }}
+          SECRET_ACCESS_KEY: ${{ secrets[env.NAME_AWS_SECRET_KEY] }}
+
+      - run: npm run config lint && npm run config typecheckOnce
+      - run: npm run test

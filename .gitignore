@@ -1,0 +1,22 @@
+**/node_modules
+
+# testing
+**/coverage
+
+# misc
+**/.DS_Store
+**/.eslintcache
+
+# editors
+**/*.swp
+**/.idea
+
+# package managers
+**/*.log
+shrinkwrap.yaml
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+## do NOT remove leading dot (as we want to ignore "report.*" files only from the repo's root
+./report.*

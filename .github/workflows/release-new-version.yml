@@ -1,0 +1,80 @@
+# Read how CI/CD works in the Organization's docs: https://github.com/gracecares-ai
+name: Release new version
+on:
+  push:
+    branches: [main]
+  # We temporarily disabled daily releases to avoid running out of GitHub Actions minutes
+  # schedule:
+  #   - cron: "0 0 * * *" # runs every day at midnight
+
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions:
+  packages: write
+  contents: write
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=6144" # 6GB is based on the 7GB available; see https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required for "gh release create"
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-concurrency-to-cancel-any-in-progress-job-or-run
+#   - "github.ref" examples: "refs/heads/<branch_name>", "refs/pull/<pr_number>/merge", "refs/tags/<tag_name>"
+#   - "github.workflow" is the name of the workflow, example: "name" global value or path of the workflow file in the repo
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gracecares-ai/gh-action-setup@v1
+        with:
+          update-org-deps: true
+          add-aws-vars-to-env: true
+          overwrite-commit-from-bot: true
+
+      - run: npm run config lint && npm run config typecheckOnce
+      - run: npm run test
+      - run: npm run ci --workspaces --if-present
+
+      # We cannot depend on the code's state for the next version, due to:
+      #   - a possible re-run of the script due to a possible error after publishing
+      - name: Get next pkg version
+        id: pkg-version
+        run: |
+          CURRENT_PKG_VERSION=$(npm view @gracecares-ai/env version)
+          NEXT_PKG_VERSION=$(npx semver $CURRENT_PKG_VERSION -i patch)
+          echo "value=$NEXT_PKG_VERSION" >> $GITHUB_OUTPUT
+      - run: npm version ${{ steps.pkg-version.outputs.value }} --allow-same-version --workspaces --no-git-tag-version
+      - run: npm publish --workspaces
+
+      - uses: actions/delete-package-versions@v5.0.0
+        with:
+          package-name: env
+          package-type: npm
+          min-versions-to-keep: 30
+
+      - uses: actions/delete-package-versions@v5.0.0
+        with:
+          package-name: tdd-unit-testing
+          package-type: npm
+          min-versions-to-keep: 30
+
+      - uses: actions/delete-package-versions@v5.0.0
+        with:
+          package-name: helpers
+          package-type: npm
+          min-versions-to-keep: 30
+
+      # MUST BE after publishing to GitHub Packages to ensure published packages versions are pushed to git
+      #   --force for "git push" is necessary to override commits by bots
+      # Run only if it's scheduled event (CRON job)
+      - if: github.event_name == 'schedule'
+        name: Commit, push changes w/ tag, and create a GitHub Release
+        run: |
+          git add .
+          git commit -m 'CHANGED: released new version `${{ steps.pkg-version.outputs.value }}`'
+          git tag -a "v${{ steps.pkg-version.outputs.value }}" -m "v${{ steps.pkg-version.outputs.value }}"
+          git push --force
+          git push --tags --force
+          gh release create "v${{ steps.pkg-version.outputs.value }}"
