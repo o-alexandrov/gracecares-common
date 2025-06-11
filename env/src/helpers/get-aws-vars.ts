@@ -9,8 +9,8 @@ import { stageDefault, stages } from "./consts"
 export const baseAwsProfile = `gracecares`
 export const awsAccountsIds = {
   // root: ``,
-  develop: ``,
-  production: ``,
+  develop: `272468137631`,
+  production: `465208506949`,
 } as const
 
 export const setVars = <S extends stage>(stage: S) =>
