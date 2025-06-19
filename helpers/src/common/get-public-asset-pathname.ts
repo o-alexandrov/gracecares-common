@@ -6,7 +6,7 @@ import * as env from "@gracecares-ai/env"
  */
 export const getPublicAssetPathname = (assetPath: string) => {
   const absolutePath = `/${assetPath}`
-  return process.env.NATIVE_APP
+  return process.env.NATIVE_APP || process.env.NODE_ENV === `development`
     ? absolutePath
     : `/${env.assetsDirectoryName}${absolutePath}`
 }
