@@ -180,3 +180,154 @@ A user can still save their username with uppercase letters, but the case will b
  */
 export type Username = string;
 
+/**
+ * Care recipient details
+ */
+export type PostV1PromptBodyCareRecipient = {
+  /** Full name of the care recipient */
+  fullName?: string;
+  /** Preferred nickname for the care recipient */
+  nickname?: string;
+  /** Relationship to the care recipient */
+  relationship?: string;
+  /** Address of the care recipient */
+  address?: string;
+};
+
+/**
+ * Health context of the care recipient
+ */
+export type PostV1PromptBodyHealthContext = {
+  /** Selected health tags/conditions */
+  selectedTags?: string[];
+  /** Selected care journey type */
+  journeySelected?: string;
+  /** Additional health notes */
+  otherNotes?: string;
+  /** When the health journey started */
+  whenStarted?: string;
+  /** Detailed health description */
+  healthDescription?: string;
+};
+
+export type PostV1PromptBodyCollaboratorsItem = {
+  /** Name of the collaborator */
+  name?: string;
+  /** Phone number of the collaborator */
+  phone?: string;
+};
+
+export type PostV1PromptBody = {
+  /** Phone number of the user */
+  phoneNumber?: string;
+  /** Selected role of the user in the care network */
+  selectedRole?: string;
+  /** Name of the primary caregiver */
+  primaryCaregiverName?: string;
+  /** Care recipient details */
+  careRecipient?: PostV1PromptBodyCareRecipient;
+  /** Health context of the care recipient */
+  healthContext?: PostV1PromptBodyHealthContext;
+  /** List of care network collaborators */
+  collaborators?: PostV1PromptBodyCollaboratorsItem[];
+};
+
+/**
+ * Summary of the clinical document
+ */
+export type PostV1Prompt200Summary = {
+  /** Name of the patient */
+  patientName?: string;
+  /** Type of clinical document */
+  noteType?: string;
+  /** Medical diagnosis or condition */
+  diagnosis?: string;
+  /** Key care instructions */
+  keyInstructions?: string[];
+  /** Next steps in care plan */
+  nextSteps?: string[];
+  /** Medical findings from labs/imaging */
+  findings?: string[];
+  /** Clinical recommendations */
+  recommendations?: string[];
+  /** Safety concerns and escalation triggers */
+  safetyAndEscalation?: string[];
+};
+
+export type PostV1Prompt200ExtractedRecoveryDetailsMedicationsItem = {
+  /** Medication name */
+  name?: string;
+  /** Medication dosage */
+  dose?: string;
+  /** How often to take medication */
+  frequency?: string;
+  /** Known side effects */
+  knownSideEffects?: string[];
+};
+
+export type PostV1Prompt200ExtractedRecoveryDetailsFollowUpAppointmentsItem = {
+  /** Appointment date in YYYY-MM-DD format */
+  date?: string;
+  /** Healthcare provider name */
+  provider?: string;
+  /** Purpose of the appointment */
+  purpose?: string;
+};
+
+/**
+ * Detailed recovery information extracted from document
+ */
+export type PostV1Prompt200ExtractedRecoveryDetails = {
+  /** List of medications */
+  medications?: PostV1Prompt200ExtractedRecoveryDetailsMedicationsItem[];
+  /** Follow-up appointments */
+  followUpAppointments?: PostV1Prompt200ExtractedRecoveryDetailsFollowUpAppointmentsItem[];
+  /** Physical therapy or rehabilitation instructions */
+  therapyInstructions?: string[];
+  /** Diet and activity guidelines */
+  dietAndActivityInstructions?: string[];
+  /** Symptoms to monitor and escalation triggers */
+  monitoringOrEscalationTriggers?: string[];
+};
+
+export type PostV1Prompt200PrescriptionDetailsItem = {
+  /** Prescription medication name */
+  name?: string;
+  /** Prescribed dosage */
+  dose?: string;
+  /** Dosing frequency */
+  frequency?: string;
+  /** Medication formulation */
+  formulation?: string;
+  /** Special instructions for taking medication */
+  specialInstructions?: string;
+};
+
+export type PostV1Prompt200TaskListItem = {
+  /** Name of the care task */
+  taskName?: string;
+  /** Scheduled date for task in YYYY-MM-DD format */
+  scheduledDate?: string;
+  /** Name of person assigned to task */
+  assignedTo?: string;
+  /** SMS message for task reminder (≤160 chars) */
+  smsMessage?: string;
+};
+
+export type PostV1Prompt200 = {
+  /** Summary of the clinical document */
+  summary?: PostV1Prompt200Summary;
+  /** Detailed recovery information extracted from document */
+  extractedRecoveryDetails?: PostV1Prompt200ExtractedRecoveryDetails;
+  /** Detailed prescription information */
+  prescriptionDetails?: PostV1Prompt200PrescriptionDetailsItem[];
+  /** List of care coordination tasks with SMS reminders */
+  taskList?: PostV1Prompt200TaskListItem[];
+};
+
+export type PostV1Prompt422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+

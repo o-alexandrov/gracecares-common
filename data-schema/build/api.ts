@@ -5,16 +5,21 @@
  * RESTful service for gracecares.ai website
  * OpenAPI spec version: 1.0.0
  */
+import type {
+  PostV1Prompt200,
+  PostV1PromptBody
+} from './api.schemas';
+
 import { req } from '../src/orval/fetch';
 import { queryString } from '../src/orval/params-serializer';
 
 /**
  * @summary Send data for a prompt
  */
-export const postV1Prompt = async (): Promise<undefined> => {
+export const postV1Prompt = async (postV1PromptBody: PostV1PromptBody,): Promise<PostV1Prompt200> => {
   
-  return req<undefined>(postV1PromptPath, {
-    
+  return req<PostV1Prompt200>(postV1PromptPath, {
+    data: postV1PromptBody
   });
 }
 export const postV1PromptPath = `v1/prompt`

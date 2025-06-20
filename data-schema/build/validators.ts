@@ -4,4 +4,35 @@
  * gracecares.ai API
  * OpenAPI spec version: 1.0.0
  */
+import {
+  z as zod
+} from 'zod/v4';
+
+
+/**
+ * @summary Send data for a prompt
+ */
+export const postV1PromptBody = zod.object({
+  "phoneNumber": zod.string().optional(),
+  "selectedRole": zod.string().optional(),
+  "primaryCaregiverName": zod.string().optional(),
+  "careRecipient": zod.object({
+  "fullName": zod.string().optional(),
+  "nickname": zod.string().optional(),
+  "relationship": zod.string().optional(),
+  "address": zod.string().optional()
+}).optional(),
+  "healthContext": zod.object({
+  "selectedTags": zod.array(zod.string()).optional(),
+  "journeySelected": zod.string().optional(),
+  "otherNotes": zod.string().optional(),
+  "whenStarted": zod.string().optional(),
+  "healthDescription": zod.string().optional()
+}).optional(),
+  "collaborators": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "phone": zod.string().optional()
+})).optional()
+})
+
 
