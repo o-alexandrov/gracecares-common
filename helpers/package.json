@@ -1,7 +1,7 @@
 {
   "name": "@gracecares-ai/helpers",
   "description": "Common helper functions",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "sideEffects": false,
   "main": "./src/node/index.ts",
   "module": "./src/node/index.ts",

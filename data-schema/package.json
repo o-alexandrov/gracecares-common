@@ -1,0 +1,31 @@
+{
+  "name": "@gracecares-ai/data-schema",
+  "version": "1.0.4",
+  "sideEffects": false,
+  "files": ["src", "scripts", "build", "types"],
+  "module": "./src/index.ts",
+  "main": "./src/index.ts",
+  "comments-scripts": [
+    "ci - runs script to generate SDK, types, OpenAPI spec, and zod validators",
+    "start - runs 'ci' script in watch mode"
+  ],
+  "scripts": {
+    "ci": "tsx $WATCH scripts/script.ts",
+    "start": "WATCH=watch npm run ci"
+  },
+  "comments": [
+    "'openapi3-ts' must be in dependencies as typings are used in other projects"
+  ],
+  "dependencies": {
+    "http-status-codes": "github:o-alexandrov/http-status-codes",
+    "openapi3-ts": "^4.4.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "fast-glob": "^3.3.3",
+    "orval": "^7.10.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

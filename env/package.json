@@ -1,7 +1,7 @@
 {
   "name": "@gracecares-ai/env",
   "description": "Common env vars",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "sideEffects": false,
   "module": "./src/index.ts",
   "main": "./src/index.ts",
@@ -14,7 +14,7 @@
     "types"
   ],
   "dependencies": {
-    "@aws-sdk/credential-provider-ini": "^3.826.0",
+    "@aws-sdk/credential-provider-ini": "^3.830.0",
     "simple-git": "^3.28.0"
   },
   "publishConfig": {
