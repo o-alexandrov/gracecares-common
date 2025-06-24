@@ -6,12 +6,26 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  PostV1File200,
   PostV1Prompt200,
   PostV1PromptBody
 } from './api.schemas';
 
 import { req } from '../src/orval/fetch';
 import { queryString } from '../src/orval/params-serializer';
+
+/**
+ * @summary Request presigned URL for clinical document upload
+ */
+export const postV1File = async (): Promise<PostV1File200> => {
+  
+  return req<PostV1File200>(postV1FilePath, {
+    
+  });
+}
+export const postV1FilePath = `v1/file`
+
+
 
 /**
  * @summary Send data for a prompt

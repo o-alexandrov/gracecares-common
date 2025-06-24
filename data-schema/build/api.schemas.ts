@@ -6,6 +6,25 @@
  * OpenAPI spec version: 1.0.0
  */
 /**
+ * Authentication information to upload a file to AWS S3, includes:
+- policy
+- signature
+ */
+export interface AuthFile {
+  /** Base64 encoded policy */
+  readonly policy: string;
+  /** Base64 encoded signature */
+  readonly signature: string;
+}
+
+/**
+ * Authentication information to upload a file to AWS S3, includes:
+- policy
+- signature
+ */
+export type AuthFiles = readonly AuthFile[];
+
+/**
  * Timestamp in days
  */
 export type CreatedDays = number;
@@ -111,6 +130,11 @@ export type Password = string;
 export type PasswordNew = string;
 
 /**
+ * Signed URL to get the file from S3
+ */
+export type SignedUrl = string;
+
+/**
  * Timestamp in days
  */
 export type ToDays = number;
@@ -179,6 +203,11 @@ A user can still save their username with uppercase letters, but the case will b
  * @pattern (?=^.{1,}$)(?=^.{0,30}$)(?=^[\w\-.]+$)
  */
 export type Username = string;
+
+export type PostV1File200 = {
+  id: Id;
+  authFile: AuthFile;
+};
 
 /**
  * Care recipient details
