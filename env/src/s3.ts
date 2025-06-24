@@ -18,3 +18,5 @@ export const s3BucketMediaRaw =
  * AWS S3 buckets we have
  */
 export type S3BucketName = typeof s3BucketMediaRaw | typeof s3BucketTemp
+
+export const maxSizeUnknownFile = 524288000 // 500MB
