@@ -12,7 +12,10 @@ import {
 /**
  * @summary Send data for a prompt
  */
+export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
+
 export const postV1PromptBody = zod.object({
+  "id": zod.string().regex(postV1PromptBodyIdRegExp),
   "phoneNumber": zod.string().optional(),
   "selectedRole": zod.string().optional(),
   "primaryCaregiverName": zod.string().optional(),

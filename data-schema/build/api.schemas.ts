@@ -247,6 +247,7 @@ export type PostV1PromptBodyCollaboratorsItem = {
 };
 
 export type PostV1PromptBody = {
+  id: Id;
   /** Phone number of the user */
   phoneNumber?: string;
   /** Selected role of the user in the care network */
