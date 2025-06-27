@@ -7,6 +7,7 @@
  */
 import type {
   PostV1File200,
+  PostV1MsgBody,
   PostV1Prompt200,
   PostV1PromptBody
 } from './api.schemas';
@@ -24,6 +25,19 @@ export const postV1File = async (): Promise<PostV1File200> => {
   });
 }
 export const postV1FilePath = `v1/file`
+
+
+
+/**
+ * @summary Send an SMS with directions
+ */
+export const postV1Msg = async (postV1MsgBody: PostV1MsgBody,): Promise<undefined> => {
+  
+  return req<undefined>(postV1MsgPath, {
+    data: postV1MsgBody
+  });
+}
+export const postV1MsgPath = `v1/msg`
 
 
 

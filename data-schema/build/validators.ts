@@ -10,6 +10,15 @@ import {
 
 
 /**
+ * @summary Send an SMS with directions
+ */
+export const postV1MsgBody = zod.object({
+  "phoneNumber": zod.string(),
+  "message": zod.string()
+})
+
+
+/**
  * @summary Send data for a prompt
  */
 export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');

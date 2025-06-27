@@ -209,6 +209,19 @@ export type PostV1File200 = {
   authFile: AuthFile;
 };
 
+export type PostV1MsgBody = {
+  /** Phone number to send the SMS to */
+  phoneNumber: string;
+  /** Message to send in the SMS */
+  message: string;
+};
+
+export type PostV1Msg422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
 /**
  * Care recipient details
  */
