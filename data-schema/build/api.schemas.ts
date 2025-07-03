@@ -234,6 +234,10 @@ export type PostV1PromptBodyCareRecipient = {
   relationship?: string;
   /** Address of the care recipient */
   address?: string;
+  /** Phone number of the care recipient */
+  phoneNumber?: string;
+  /** Additional notes about the care recipient */
+  notes?: string;
 };
 
 /**
@@ -257,10 +261,14 @@ export type PostV1PromptBodyCollaboratorsItem = {
   name?: string;
   /** Phone number of the collaborator */
   phone?: string;
+  /** Additional notes about the collaborator */
+  notes?: string;
 };
 
 export type PostV1PromptBody = {
-  id: Id;
+  /** Identifier of the uploaded document
+- user can skip uploading a document (so it's optional) */
+  id?: Id;
   /** Phone number of the user */
   phoneNumber?: string;
   /** Selected role of the user in the care network */

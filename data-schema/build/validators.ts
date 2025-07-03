@@ -24,7 +24,7 @@ export const postV1MsgBody = zod.object({
 export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
 
 export const postV1PromptBody = zod.object({
-  "id": zod.string().regex(postV1PromptBodyIdRegExp),
+  "id": zod.string().regex(postV1PromptBodyIdRegExp).optional(),
   "phoneNumber": zod.string().optional(),
   "selectedRole": zod.string().optional(),
   "primaryCaregiverName": zod.string().optional(),
@@ -32,7 +32,9 @@ export const postV1PromptBody = zod.object({
   "fullName": zod.string().optional(),
   "nickname": zod.string().optional(),
   "relationship": zod.string().optional(),
-  "address": zod.string().optional()
+  "address": zod.string().optional(),
+  "phoneNumber": zod.string().optional(),
+  "notes": zod.string().optional()
 }).optional(),
   "healthContext": zod.object({
   "selectedTags": zod.array(zod.string()).optional(),
@@ -43,7 +45,8 @@ export const postV1PromptBody = zod.object({
 }).optional(),
   "collaborators": zod.array(zod.object({
   "name": zod.string().optional(),
-  "phone": zod.string().optional()
+  "phone": zod.string().optional(),
+  "notes": zod.string().optional()
 })).optional()
 })
 

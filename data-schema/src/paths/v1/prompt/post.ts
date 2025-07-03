@@ -6,7 +6,12 @@ export const definition = {
   summary: `Send data for a prompt`,
   requestBody: {
     properties: {
-      id: { required: true },
+      id: {
+        descriptionAdditional: [
+          `Identifier of the uploaded document`,
+          `- user can skip uploading a document (so it's optional)`,
+        ],
+      },
     },
     _dangerousUndocumentedProperties: {
       // Page 2: Authentication
@@ -52,6 +57,16 @@ export const definition = {
             type: `string`,
             description: `Address of the care recipient`,
             example: `123 Main St, City, State 12345`,
+          },
+          phoneNumber: {
+            type: `string`,
+            description: `Phone number of the care recipient`,
+            example: `+1234567890`,
+          },
+          notes: {
+            type: `string`,
+            description: `Additional notes about the care recipient`,
+            example: `Prefers to be called by nickname, has hearing difficulties`,
           },
         },
       },
@@ -107,6 +122,11 @@ export const definition = {
               type: `string`,
               description: `Phone number of the collaborator`,
               example: `+1987654321`,
+            },
+            notes: {
+              type: `string`,
+              description: `Additional notes about the collaborator`,
+              example: `Available weekdays only, prefers text messages`,
             },
           },
         },
