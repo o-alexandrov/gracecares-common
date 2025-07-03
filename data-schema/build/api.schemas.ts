@@ -283,10 +283,40 @@ export type PostV1PromptBody = {
   collaborators?: PostV1PromptBodyCollaboratorsItem[];
 };
 
+export type PostV1Prompt200 = {
+  /** Identifier of a thread */
+  id: Id;
+  /** Identifier of the prompt run */
+  runId?: string;
+  /** Identifier of the assistant */
+  assistantId?: string;
+  /** Identifier of the uploaded file (if any) */
+  fileId?: string;
+};
+
+export type PostV1Prompt422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
+export type PostV1PromptCheckBody = {
+  /** Identifier of the LLM thread (required) */
+  id?: string;
+  /** Identifier of the LLM run */
+  runId?: string;
+  /** Identifier of the assistant */
+  assistantId?: string;
+  /** Identifier of the uploaded file (if any) */
+  fileId?: string;
+  /** Whether to wait for completion or return immediately */
+  waitForCompletion?: boolean;
+};
+
 /**
- * Summary of the clinical document
+ * Summary of the clinical document (only present if completed)
  */
-export type PostV1Prompt200Summary = {
+export type PostV1PromptCheck200Summary = {
   /** Name of the patient */
   patientName?: string;
   /** Type of clinical document */
@@ -305,7 +335,7 @@ export type PostV1Prompt200Summary = {
   safetyAndEscalation?: string[];
 };
 
-export type PostV1Prompt200ExtractedRecoveryDetailsMedicationsItem = {
+export type PostV1PromptCheck200ExtractedRecoveryDetailsMedicationsItem = {
   /** Medication name */
   name?: string;
   /** Medication dosage */
@@ -316,7 +346,7 @@ export type PostV1Prompt200ExtractedRecoveryDetailsMedicationsItem = {
   knownSideEffects?: string[];
 };
 
-export type PostV1Prompt200ExtractedRecoveryDetailsFollowUpAppointmentsItem = {
+export type PostV1PromptCheck200ExtractedRecoveryDetailsFollowUpAppointmentsItem = {
   /** Appointment date in YYYY-MM-DD format */
   date?: string;
   /** Healthcare provider name */
@@ -328,11 +358,11 @@ export type PostV1Prompt200ExtractedRecoveryDetailsFollowUpAppointmentsItem = {
 /**
  * Detailed recovery information extracted from document
  */
-export type PostV1Prompt200ExtractedRecoveryDetails = {
+export type PostV1PromptCheck200ExtractedRecoveryDetails = {
   /** List of medications */
-  medications?: PostV1Prompt200ExtractedRecoveryDetailsMedicationsItem[];
+  medications?: PostV1PromptCheck200ExtractedRecoveryDetailsMedicationsItem[];
   /** Follow-up appointments */
-  followUpAppointments?: PostV1Prompt200ExtractedRecoveryDetailsFollowUpAppointmentsItem[];
+  followUpAppointments?: PostV1PromptCheck200ExtractedRecoveryDetailsFollowUpAppointmentsItem[];
   /** Physical therapy or rehabilitation instructions */
   therapyInstructions?: string[];
   /** Diet and activity guidelines */
@@ -341,7 +371,7 @@ export type PostV1Prompt200ExtractedRecoveryDetails = {
   monitoringOrEscalationTriggers?: string[];
 };
 
-export type PostV1Prompt200PrescriptionDetailsItem = {
+export type PostV1PromptCheck200PrescriptionDetailsItem = {
   /** Prescription medication name */
   name?: string;
   /** Prescribed dosage */
@@ -354,7 +384,7 @@ export type PostV1Prompt200PrescriptionDetailsItem = {
   specialInstructions?: string;
 };
 
-export type PostV1Prompt200TaskListItem = {
+export type PostV1PromptCheck200TaskListItem = {
   /** Name of the care task */
   taskName?: string;
   /** Scheduled date for task in YYYY-MM-DD format */
@@ -365,18 +395,22 @@ export type PostV1Prompt200TaskListItem = {
   smsMessage?: string;
 };
 
-export type PostV1Prompt200 = {
-  /** Summary of the clinical document */
-  summary?: PostV1Prompt200Summary;
+export type PostV1PromptCheck200 = {
+  /** Current status of the run */
+  status?: string;
+  /** Whether the run has completed */
+  completed?: boolean;
+  /** Summary of the clinical document (only present if completed) */
+  summary?: PostV1PromptCheck200Summary;
   /** Detailed recovery information extracted from document */
-  extractedRecoveryDetails?: PostV1Prompt200ExtractedRecoveryDetails;
+  extractedRecoveryDetails?: PostV1PromptCheck200ExtractedRecoveryDetails;
   /** Detailed prescription information */
-  prescriptionDetails?: PostV1Prompt200PrescriptionDetailsItem[];
+  prescriptionDetails?: PostV1PromptCheck200PrescriptionDetailsItem[];
   /** List of care coordination tasks with SMS reminders */
-  taskList?: PostV1Prompt200TaskListItem[];
+  taskList?: PostV1PromptCheck200TaskListItem[];
 };
 
-export type PostV1Prompt422 = {
+export type PostV1PromptCheck422 = {
   expected: string;
   code: string;
   message: string;

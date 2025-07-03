@@ -9,7 +9,9 @@ import type {
   PostV1File200,
   PostV1MsgBody,
   PostV1Prompt200,
-  PostV1PromptBody
+  PostV1PromptBody,
+  PostV1PromptCheck200,
+  PostV1PromptCheckBody
 } from './api.schemas';
 
 import { req } from '../src/orval/fetch';
@@ -51,6 +53,19 @@ export const postV1Prompt = async (postV1PromptBody: PostV1PromptBody,): Promise
   });
 }
 export const postV1PromptPath = `v1/prompt`
+
+
+
+/**
+ * @summary Retrieve the LLM's summary
+ */
+export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheckBody,): Promise<PostV1PromptCheck200> => {
+  
+  return req<PostV1PromptCheck200>(postV1PromptCheckPath, {
+    data: postV1PromptCheckBody
+  });
+}
+export const postV1PromptCheckPath = `v1/prompt/check`
 
 
 

@@ -51,3 +51,15 @@ export const postV1PromptBody = zod.object({
 })
 
 
+/**
+ * @summary Retrieve the LLM's summary
+ */
+export const postV1PromptCheckBody = zod.object({
+  "id": zod.string().optional(),
+  "runId": zod.string().optional(),
+  "assistantId": zod.string().optional(),
+  "fileId": zod.string().optional(),
+  "waitForCompletion": zod.boolean().optional()
+})
+
+
