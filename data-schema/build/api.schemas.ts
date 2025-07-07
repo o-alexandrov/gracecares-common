@@ -398,6 +398,8 @@ export type PostV1PromptCheck200TaskListItem = {
 };
 
 export type PostV1PromptCheck200 = {
+  /** Identifier of the LLM thread */
+  id?: string;
   /** Current status of the run */
   status?: string;
   /** Whether the run has completed */

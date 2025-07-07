@@ -37,6 +37,11 @@ export const definition = {
       schema: {
         type: `object`,
         _dangerousUndocumentedProperties: {
+          id: {
+            type: `string`,
+            description: `Identifier of the LLM thread`,
+            example: `thread_1234567890abcdef`,
+          },
           status: {
             type: `string`,
             description: `Current status of the run`,
