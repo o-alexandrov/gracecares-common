@@ -13,6 +13,7 @@ import {
  * @summary Send an SMS with directions
  */
 export const postV1MsgBody = zod.object({
+  "threadId": zod.string(),
   "phoneNumber": zod.string(),
   "message": zod.string()
 })

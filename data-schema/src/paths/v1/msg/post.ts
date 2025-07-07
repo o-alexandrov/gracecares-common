@@ -6,6 +6,12 @@ export const definition = {
   summary: `Send an SMS with directions`,
   requestBody: {
     _dangerousUndocumentedProperties: {
+      threadId: {
+        type: `string`,
+        description: `Thread ID for the conversation, if applicable`,
+        example: `thread_1234567890`,
+        required: true,
+      },
       phoneNumber: {
         type: `string`,
         description: `Phone number to send the SMS to`,

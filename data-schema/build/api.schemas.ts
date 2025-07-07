@@ -210,6 +210,8 @@ export type PostV1File200 = {
 };
 
 export type PostV1MsgBody = {
+  /** Thread ID for the conversation, if applicable */
+  threadId: string;
   /** Phone number to send the SMS to */
   phoneNumber: string;
   /** Message to send in the SMS */
