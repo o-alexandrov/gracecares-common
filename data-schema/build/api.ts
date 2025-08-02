@@ -6,12 +6,16 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  GetV1UserCheckPhoneParams,
   PostV1File200,
   PostV1MsgBody,
   PostV1Prompt200,
   PostV1PromptBody,
   PostV1PromptCheck200,
-  PostV1PromptCheckBody
+  PostV1PromptCheckBody,
+  PostV1UserVerifyBody,
+  PostV1UserVerifyConfirm200,
+  PostV1UserVerifyConfirmBody
 } from './api.schemas';
 
 import { req } from '../src/orval/fetch';
@@ -66,6 +70,46 @@ export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheck
   });
 }
 export const postV1PromptCheckPath = `v1/prompt/check`
+
+
+
+/**
+ * @summary Check whether user exists
+ */
+export const getV1UserCheckPhone = async (pathParams: {phone: string}, params?: GetV1UserCheckPhoneParams,): Promise<undefined> => {
+  
+  return req<undefined>(getV1UserCheckPhonePath(pathParams, params), {
+    method: `GET`
+  });
+}
+export const getV1UserCheckPhonePath = (pathParams: {phone: string}, params?: GetV1UserCheckPhoneParams | Falsy) =>
+  `v1/user/check/${pathParams.phone}${queryString(params)}`
+
+
+
+/**
+ * @summary Verification Step1. Request a code
+ */
+export const postV1UserVerify = async (postV1UserVerifyBody: PostV1UserVerifyBody,): Promise<undefined> => {
+  
+  return req<undefined>(postV1UserVerifyPath, {
+    data: postV1UserVerifyBody
+  });
+}
+export const postV1UserVerifyPath = `v1/user/verify`
+
+
+
+/**
+ * @summary Verification Step2. Confirm verification code
+ */
+export const postV1UserVerifyConfirm = async (postV1UserVerifyConfirmBody: PostV1UserVerifyConfirmBody,): Promise<PostV1UserVerifyConfirm200> => {
+  
+  return req<PostV1UserVerifyConfirm200>(postV1UserVerifyConfirmPath, {
+    data: postV1UserVerifyConfirmBody
+  });
+}
+export const postV1UserVerifyConfirmPath = `v1/user/verify-confirm`
 
 
 

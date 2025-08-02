@@ -4,3 +4,4 @@
 export * from "./auth"
 export * from "./counter"
 export * as noP from "./no-password"
+export * as confirmedPhone from "./confirmed-phone"

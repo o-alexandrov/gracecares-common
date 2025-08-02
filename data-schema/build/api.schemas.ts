@@ -25,6 +25,32 @@ export interface AuthFile {
 export type AuthFiles = readonly AuthFile[];
 
 /**
+ * A short numeric code that is sent to recover.
+ */
+export type CodeR = string;
+
+/**
+ * A short numeric code that is sent to verify
+ */
+export type CodeV = string;
+
+/**
+ * Indicator whether a user has confirmed their phone number
+ */
+export type ConfirmedPhone = typeof ConfirmedPhone[keyof typeof ConfirmedPhone];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ConfirmedPhone = {
+  NUMBER_1: 1,
+} as const;
+
+/**
+ * Command to create
+ */
+export type Create = boolean;
+
+/**
  * Timestamp in days
  */
 export type CreatedDays = number;
@@ -74,8 +100,10 @@ export type Id = string;
 export interface ItemUser {
   id: Id;
   created: CreatedSeconds;
-  username: Username;
+  phone?: Phone;
+  username?: Username;
   name?: Name;
+  confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
   /** Represents when the user will be automatically removed.
@@ -84,7 +112,6 @@ export interface ItemUser {
 A user can request account & data removal
 - when we receive such request, our backend adds `ttl` attribute for automated removal a week later */
   ttl?: TtlHours;
-  notifications?: Notifications;
 }
 
 /**
@@ -130,6 +157,13 @@ export type Password = string;
 export type PasswordNew = string;
 
 /**
+ * Phone number
+- must be a 10-digit number (e.g., 4155552671)
+ * @pattern (?=^\d{10}$)
+ */
+export type Phone = string;
+
+/**
  * Signed URL to get the file from S3
  */
 export type SignedUrl = string;
@@ -148,6 +182,11 @@ export type ToHours = number;
  * Timestamp in seconds
  */
 export type ToSeconds = number;
+
+/**
+ * A secure value (token) that can be used to authenticate
+ */
+export type Token = string;
 
 /**
  * Request `ttl` to be added to the `item`
@@ -415,6 +454,60 @@ export type PostV1PromptCheck200 = {
 };
 
 export type PostV1PromptCheck422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
+export type GetV1UserCheckPhoneParams = {
+/**
+ * Command to create
+ */
+create?: boolean;
+};
+
+export type PostV1UserVerifyBody = {
+  phone: Phone;
+};
+
+export type PostV1UserVerify422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
+export type PostV1UserVerifyConfirmBody = {
+  phone: Phone;
+  codeV: CodeV;
+};
+
+/**
+ * User data, with private data included
+ */
+export type PostV1UserVerifyConfirm200User = {
+  id: Id;
+  created: CreatedSeconds;
+  phone?: Phone;
+  username?: Username;
+  name?: Name;
+  confirmedPhone?: ConfirmedPhone;
+  email?: Email;
+  noP?: NoP;
+  /** Represents when the user will be automatically removed.
+
+
+A user can request account & data removal
+- when we receive such request, our backend adds `ttl` attribute for automated removal a week later */
+  ttl?: TtlHours;
+};
+
+export type PostV1UserVerifyConfirm200 = {
+  token: Token;
+  /** User data, with private data included */
+  user: PostV1UserVerifyConfirm200User;
+};
+
+export type PostV1UserVerifyConfirm422 = {
   expected: string;
   code: string;
   message: string;

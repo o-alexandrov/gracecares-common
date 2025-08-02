@@ -8,6 +8,10 @@ import {
   z as zod
 } from 'zod/v4';
 
+import {
+  trim
+} from './validators.preprocess';
+
 
 /**
  * @summary Send an SMS with directions
@@ -61,6 +65,27 @@ export const postV1PromptCheckBody = zod.object({
   "assistantId": zod.string().optional(),
   "fileId": zod.string().optional(),
   "waitForCompletion": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Verification Step1. Request a code
+ */
+export const postV1UserVerifyBodyPhoneRegExp = new RegExp('(?=^\\d{10}$)');
+
+export const postV1UserVerifyBody = zod.object({
+  "phone": zod.preprocess(trim, zod.string().regex(postV1UserVerifyBodyPhoneRegExp))
+})
+
+
+/**
+ * @summary Verification Step2. Confirm verification code
+ */
+export const postV1UserVerifyConfirmBodyPhoneRegExp = new RegExp('(?=^\\d{10}$)');
+
+export const postV1UserVerifyConfirmBody = zod.object({
+  "phone": zod.preprocess(trim, zod.string().regex(postV1UserVerifyConfirmBodyPhoneRegExp)),
+  "codeV": zod.string()
 })
 
 

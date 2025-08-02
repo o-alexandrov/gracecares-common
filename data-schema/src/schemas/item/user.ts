@@ -3,14 +3,15 @@ const variant = `user` satisfies OA3.VariantOptions
 export const publicData = {
   id: { required: true },
   created: { variant: `seconds`, required: true },
-  username: { required: true },
-
+  phone: {},
+  username: {},
   name: {},
 } as const satisfies OA3.Properties
 
 export type PublicDataKeys = keyof typeof publicData
 
 const privateData = {
+  confirmedPhone: {},
   email: {},
   noP: {},
   ttl: {
@@ -23,14 +24,14 @@ const privateData = {
   },
 } as const satisfies OA3.Properties
 
-const privateSystemData = {
-  notifications: {},
-} as const satisfies OA3.Properties
+// const privateSystemData = {
+//   notifications: {},
+// } as const satisfies OA3.Properties
 
 export const definition = {
   ...publicData,
   ...privateData,
-  ...privateSystemData,
+  // ...privateSystemData,
 }
 
 export type PrivateDataKeys = Exclude<keyof typeof definition, PublicDataKeys>
