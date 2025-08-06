@@ -6,4 +6,11 @@ export const name = common.setNamePostfix(`user`)
 
 export const variants = {
   generic: common.definition,
+  network: {
+    ...common.definition,
+    description: [
+      common.definition.description,
+      `Care recipient's identifier.`,
+    ],
+  },
 } as const satisfies OA3.Variants

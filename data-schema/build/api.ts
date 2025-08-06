@@ -7,8 +7,10 @@
  */
 import type {
   GetV1UserCheckPhoneParams,
+  PatchV1UserBody,
   PostV1File200,
   PostV1MsgBody,
+  PostV1NetworkBody,
   PostV1Prompt200,
   PostV1PromptBody,
   PostV1PromptCheck200,
@@ -48,6 +50,20 @@ export const postV1MsgPath = `v1/msg`
 
 
 /**
+ * @summary Create network
+ */
+export const postV1Network = async (postV1NetworkBody: PostV1NetworkBody,): Promise<undefined> => {
+  
+  return req<undefined>(postV1NetworkPath, {
+    data: postV1NetworkBody,
+    protected: true
+  });
+}
+export const postV1NetworkPath = `v1/network`
+
+
+
+/**
  * @summary Send data for a prompt
  */
 export const postV1Prompt = async (postV1PromptBody: PostV1PromptBody,): Promise<PostV1Prompt200> => {
@@ -70,6 +86,21 @@ export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheck
   });
 }
 export const postV1PromptCheckPath = `v1/prompt/check`
+
+
+
+/**
+ * @summary Update user from Authorization header
+ */
+export const patchV1User = async (patchV1UserBody: PatchV1UserBody,): Promise<undefined> => {
+  
+  return req<undefined>(patchV1UserPath, {
+    method: `PATCH`,
+    data: patchV1UserBody,
+    protected: true
+  });
+}
+export const patchV1UserPath = `v1/user`
 
 
 

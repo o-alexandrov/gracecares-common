@@ -24,6 +24,26 @@ export const postV1MsgBody = zod.object({
 
 
 /**
+ * @summary Create network
+ */
+export const postV1NetworkBodyPhoneRegExp = new RegExp('(?=^\\d{10}$)');
+export const postV1NetworkBodyRelationshipRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
+export const postV1NetworkBodyNameRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+export const postV1NetworkBodyNamePreferredRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
+export const postV1NetworkBodyAddressRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,500}$)');
+export const postV1NetworkBodyNotesRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,1000}$)');
+
+export const postV1NetworkBody = zod.object({
+  "phone": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyPhoneRegExp)),
+  "relationship": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyRelationshipRegExp)),
+  "name": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNameRegExp)),
+  "namePreferred": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNamePreferredRegExp).optional()),
+  "address": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyAddressRegExp).optional()),
+  "notes": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNotesRegExp).optional())
+})
+
+
+/**
  * @summary Send data for a prompt
  */
 export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
@@ -65,6 +85,18 @@ export const postV1PromptCheckBody = zod.object({
   "assistantId": zod.string().optional(),
   "fileId": zod.string().optional(),
   "waitForCompletion": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Update user from Authorization header
+ */
+export const patchV1UserBodyNameRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+export const patchV1UserBodyNamePreferredRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
+
+export const patchV1UserBody = zod.object({
+  "name": zod.preprocess(trim, zod.string().regex(patchV1UserBodyNameRegExp).optional()),
+  "namePreferred": zod.preprocess(trim, zod.string().regex(patchV1UserBodyNamePreferredRegExp).optional())
 })
 
 
