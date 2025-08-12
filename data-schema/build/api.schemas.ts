@@ -49,6 +49,21 @@ export type CodeR = string;
 export type CodeV = string;
 
 /**
+ * Any additional information
+ */
+export interface Collaborator {
+  userID: UserIDGeneric;
+  /** Notes about the collaborator */
+  notes?: Notes;
+  confirmed: ConfirmedNetwork;
+}
+
+/**
+ * List of collaborators
+ */
+export type Collaborators = Collaborator[];
+
+/**
  * Indicator whether a user has confirmed a specific action where this attribute is used
  */
 export type ConfirmedGeneric = typeof ConfirmedGeneric[keyof typeof ConfirmedGeneric];
@@ -140,10 +155,16 @@ export interface ItemNetwork {
   caregiverID: CaregiverID;
   /** When the network was created */
   created: CreatedSeconds;
+  /** List of collaborators involved in the network */
+  collaborators: Collaborators;
   /** The last time the network was updated */
   updated?: UpdatedSeconds;
   /** Indicator whether the network has been confirmed by the care recipient */
   confirmed: ConfirmedNetwork;
+  /** Notes about the care recipient */
+  notes?: Notes;
+  /** The relationship of the care recipient to the caregiver */
+  relationship?: Relationship;
 }
 
 export interface ItemUser {
@@ -152,6 +173,8 @@ export interface ItemUser {
   phone?: Phone;
   username?: Username;
   name?: Name;
+  namePreferred?: NamePreferred;
+  address?: Address;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -348,7 +371,33 @@ export type PostV1NetworkBody = {
   notes?: Notes;
 };
 
+export type PostV1Network200 = {
+  /** This is a unique identifier. It's not a copy of another identifier. It's a completely independent identifier. */
+  userID: UserIDNetwork;
+  /** When the network was created */
+  created: CreatedSeconds;
+};
+
+export type PostV1Network201 = {
+  /** This is a unique identifier. It's not a copy of another identifier. It's a completely independent identifier. */
+  userID: UserIDNetwork;
+  /** When the network was created */
+  created: CreatedSeconds;
+};
+
 export type PostV1Network422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
+export type PostV1NetworkRecipientCreatedCollaboratorBody = {
+  name: Name;
+  phone: Phone;
+  notes?: Notes;
+};
+
+export type PostV1NetworkRecipientCreatedCollaborator422 = {
   expected: string;
   code: string;
   message: string;
@@ -592,6 +641,8 @@ export type PostV1UserVerifyConfirm200User = {
   phone?: Phone;
   username?: Username;
   name?: Name;
+  namePreferred?: NamePreferred;
+  address?: Address;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;

@@ -12,6 +12,10 @@ export const definition = {
     required: true,
     descriptionAdditional: `When the network was created`,
   },
+  collaborators: {
+    required: true,
+    descriptionAdditional: `List of collaborators involved in the network`,
+  },
   updated: {
     variant: `seconds`,
     descriptionAdditional: `The last time the network was updated`,
@@ -20,5 +24,11 @@ export const definition = {
     variant: `network`,
     descriptionAdditional: `Indicator whether the network has been confirmed by the care recipient`,
     required: true,
+  },
+  notes: {
+    descriptionAdditional: `Notes about the care recipient`,
+  },
+  relationship: {
+    descriptionAdditional: `The relationship of the care recipient to the caregiver`,
   },
 } as const satisfies OA3.Properties

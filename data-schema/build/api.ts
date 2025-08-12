@@ -10,7 +10,10 @@ import type {
   PatchV1UserBody,
   PostV1File200,
   PostV1MsgBody,
+  PostV1Network200,
+  PostV1Network201,
   PostV1NetworkBody,
+  PostV1NetworkRecipientCreatedCollaboratorBody,
   PostV1Prompt200,
   PostV1PromptBody,
   PostV1PromptCheck200,
@@ -50,16 +53,45 @@ export const postV1MsgPath = `v1/msg`
 
 
 /**
+ * @summary Delete all created networks by the Authenticated user
+ */
+export const deleteV1Network = async (): Promise<undefined> => {
+  
+  return req<undefined>(deleteV1NetworkPath, {
+    method: `DELETE`,
+    protected: true
+  });
+}
+export const deleteV1NetworkPath = `v1/network`
+
+
+
+/**
  * @summary Create network
  */
-export const postV1Network = async (postV1NetworkBody: PostV1NetworkBody,): Promise<undefined> => {
+export const postV1Network = async (postV1NetworkBody: PostV1NetworkBody,): Promise<PostV1Network200 | PostV1Network201> => {
   
-  return req<undefined>(postV1NetworkPath, {
+  return req<PostV1Network200 | PostV1Network201>(postV1NetworkPath, {
     data: postV1NetworkBody,
     protected: true
   });
 }
 export const postV1NetworkPath = `v1/network`
+
+
+
+/**
+ * @summary Add collaborator to network
+ */
+export const postV1NetworkRecipientCreatedCollaborator = async (pathParams: {recipient: string, created: number}, postV1NetworkRecipientCreatedCollaboratorBody: PostV1NetworkRecipientCreatedCollaboratorBody,): Promise<undefined> => {
+  
+  return req<undefined>(postV1NetworkRecipientCreatedCollaboratorPath(pathParams), {
+    data: postV1NetworkRecipientCreatedCollaboratorBody,
+    protected: true
+  });
+}
+export const postV1NetworkRecipientCreatedCollaboratorPath = (pathParams: {recipient: string, created: number}) =>
+  `v1/network/${pathParams.recipient}/${pathParams.created}/collaborator`
 
 
 

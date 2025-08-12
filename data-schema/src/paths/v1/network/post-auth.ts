@@ -1,4 +1,13 @@
 import * as StatusCodes from "http-status-codes"
+import * as commonHelpers from "@gracecares-ai/helpers"
+import * as items from "@gracecares-ai/data-schema/src/schemas/item"
+
+const commonSchema = {
+  type: "object",
+  properties: {
+    ...commonHelpers.pick(items.network.definition, ["userID", "created"]),
+  },
+} as const satisfies OA3.ResponseSchema
 
 export const definition = {
   summary: `Create network`,
@@ -18,10 +27,12 @@ export const definition = {
       description: `Caregiver and care recipient already have a network`,
     },
     [StatusCodes.OK]: {
-      description: `Network created with a new user for care recipient`,
+      description: `New network created (care recipient is invited as an existing user)`,
+      schema: commonSchema,
     },
     [StatusCodes.CREATED]: {
-      description: `Network created without a new user for care recipient`,
+      description: `New network created AND a new user (care recipient)`,
+      schema: commonSchema,
     },
   },
 } as const satisfies OA3.Path

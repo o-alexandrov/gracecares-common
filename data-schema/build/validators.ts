@@ -44,6 +44,20 @@ export const postV1NetworkBody = zod.object({
 
 
 /**
+ * @summary Add collaborator to network
+ */
+export const postV1NetworkRecipientCreatedCollaboratorBodyNameRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+export const postV1NetworkRecipientCreatedCollaboratorBodyPhoneRegExp = new RegExp('(?=^\\d{10}$)');
+export const postV1NetworkRecipientCreatedCollaboratorBodyNotesRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,1000}$)');
+
+export const postV1NetworkRecipientCreatedCollaboratorBody = zod.object({
+  "name": zod.preprocess(trim, zod.string().regex(postV1NetworkRecipientCreatedCollaboratorBodyNameRegExp)),
+  "phone": zod.preprocess(trim, zod.string().regex(postV1NetworkRecipientCreatedCollaboratorBodyPhoneRegExp)),
+  "notes": zod.preprocess(trim, zod.string().regex(postV1NetworkRecipientCreatedCollaboratorBodyNotesRegExp).optional())
+})
+
+
+/**
  * @summary Send data for a prompt
  */
 export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
