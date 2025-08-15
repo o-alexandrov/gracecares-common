@@ -9,7 +9,8 @@ import {
 } from 'zod/v4';
 
 import {
-  trim
+  trim,
+  trimAndLowerCase
 } from './validators.preprocess';
 
 
@@ -30,7 +31,7 @@ export const postV1NetworkBodyPhoneRegExp = new RegExp('(?=^\\d{10}$)');
 export const postV1NetworkBodyRelationshipRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
 export const postV1NetworkBodyNameRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
 export const postV1NetworkBodyNamePreferredRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
-export const postV1NetworkBodyAddressRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,500}$)');
+export const postV1NetworkBodyZipRegExp = new RegExp('(?=^.{5}$)(?=^\\d+$)');
 export const postV1NetworkBodyNotesRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,1000}$)');
 
 export const postV1NetworkBody = zod.object({
@@ -38,8 +39,22 @@ export const postV1NetworkBody = zod.object({
   "relationship": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyRelationshipRegExp)),
   "name": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNameRegExp)),
   "namePreferred": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNamePreferredRegExp).optional()),
-  "address": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyAddressRegExp).optional()),
+  "zip": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyZipRegExp).optional()),
   "notes": zod.preprocess(trim, zod.string().regex(postV1NetworkBodyNotesRegExp).optional())
+})
+
+
+/**
+ * @summary Update network
+ */
+export const patchV1NetworkRecipientCreatedBodyHealthConditionRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,1000}$)');
+export const patchV1NetworkRecipientCreatedBodyCareNeedsItemRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+
+export const patchV1NetworkRecipientCreatedBody = zod.object({
+  "healthCondition": zod.preprocess(trim, zod.string().regex(patchV1NetworkRecipientCreatedBodyHealthConditionRegExp).optional()),
+  "careNeeds": zod.array(zod.preprocess(trimAndLowerCase, zod.string().regex(patchV1NetworkRecipientCreatedBodyCareNeedsItemRegExp))).optional(),
+  "expectation": zod.literal(3).or(zod.literal(4)).or(zod.literal(5)).optional(),
+  "conditionStartDate": zod.preprocess(trim, zod.string().optional())
 })
 
 
@@ -60,33 +75,13 @@ export const postV1NetworkRecipientCreatedCollaboratorBody = zod.object({
 /**
  * @summary Send data for a prompt
  */
+export const postV1PromptBodyUserIDRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
 export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
 
 export const postV1PromptBody = zod.object({
-  "id": zod.string().regex(postV1PromptBodyIdRegExp).optional(),
-  "phoneNumber": zod.string().optional(),
-  "selectedRole": zod.string().optional(),
-  "primaryCaregiverName": zod.string().optional(),
-  "careRecipient": zod.object({
-  "fullName": zod.string().optional(),
-  "nickname": zod.string().optional(),
-  "relationship": zod.string().optional(),
-  "address": zod.string().optional(),
-  "phoneNumber": zod.string().optional(),
-  "notes": zod.string().optional()
-}).optional(),
-  "healthContext": zod.object({
-  "selectedTags": zod.array(zod.string()).optional(),
-  "journeySelected": zod.string().optional(),
-  "otherNotes": zod.string().optional(),
-  "whenStarted": zod.string().optional(),
-  "healthDescription": zod.string().optional()
-}).optional(),
-  "collaborators": zod.array(zod.object({
-  "name": zod.string().optional(),
-  "phone": zod.string().optional(),
-  "notes": zod.string().optional()
-})).optional()
+  "userID": zod.string().regex(postV1PromptBodyUserIDRegExp),
+  "created": zod.number(),
+  "id": zod.string().regex(postV1PromptBodyIdRegExp).optional()
 })
 
 
@@ -107,10 +102,12 @@ export const postV1PromptCheckBody = zod.object({
  */
 export const patchV1UserBodyNameRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
 export const patchV1UserBodyNamePreferredRegExp = new RegExp('(?=^.{0,}$)(?=^.{0,200}$)');
+export const patchV1UserBodyZipRegExp = new RegExp('(?=^.{5}$)(?=^\\d+$)');
 
 export const patchV1UserBody = zod.object({
   "name": zod.preprocess(trim, zod.string().regex(patchV1UserBodyNameRegExp).optional()),
-  "namePreferred": zod.preprocess(trim, zod.string().regex(patchV1UserBodyNamePreferredRegExp).optional())
+  "namePreferred": zod.preprocess(trim, zod.string().regex(patchV1UserBodyNamePreferredRegExp).optional()),
+  "zip": zod.preprocess(trim, zod.string().regex(patchV1UserBodyZipRegExp).optional())
 })
 
 

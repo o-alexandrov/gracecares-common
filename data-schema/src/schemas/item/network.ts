@@ -31,4 +31,8 @@ export const definition = {
   relationship: {
     descriptionAdditional: `The relationship of the care recipient to the caregiver`,
   },
+  healthCondition: {},
+  careNeeds: {},
+  expectation: {},
+  conditionStartDate: {},
 } as const satisfies OA3.Properties

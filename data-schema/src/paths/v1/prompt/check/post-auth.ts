@@ -55,11 +55,6 @@ export const definition = {
             type: `object`,
             description: `Summary of the clinical document (only present if completed)`,
             _dangerousUndocumentedProperties: {
-              patientName: {
-                type: `string`,
-                description: `Name of the patient`,
-                example: `Marie Chen`,
-              },
               noteType: {
                 type: `string`,
                 description: `Type of clinical document`,

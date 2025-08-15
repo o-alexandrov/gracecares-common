@@ -7,12 +7,15 @@
  */
 import type {
   GetV1UserCheckPhoneParams,
+  PatchV1NetworkRecipientCreatedBody,
   PatchV1UserBody,
   PostV1File200,
   PostV1MsgBody,
   PostV1Network200,
   PostV1Network201,
   PostV1NetworkBody,
+  PostV1NetworkRecipientCreatedCollaborator200,
+  PostV1NetworkRecipientCreatedCollaborator201,
   PostV1NetworkRecipientCreatedCollaboratorBody,
   PostV1Prompt200,
   PostV1PromptBody,
@@ -81,11 +84,27 @@ export const postV1NetworkPath = `v1/network`
 
 
 /**
+ * @summary Update network
+ */
+export const patchV1NetworkRecipientCreated = async (pathParams: {recipient: string, created: number}, patchV1NetworkRecipientCreatedBody: PatchV1NetworkRecipientCreatedBody,): Promise<undefined> => {
+  
+  return req<undefined>(patchV1NetworkRecipientCreatedPath(pathParams), {
+    method: `PATCH`,
+    data: patchV1NetworkRecipientCreatedBody,
+    protected: true
+  });
+}
+export const patchV1NetworkRecipientCreatedPath = (pathParams: {recipient: string, created: number}) =>
+  `v1/network/${pathParams.recipient}/${pathParams.created}`
+
+
+
+/**
  * @summary Add collaborator to network
  */
-export const postV1NetworkRecipientCreatedCollaborator = async (pathParams: {recipient: string, created: number}, postV1NetworkRecipientCreatedCollaboratorBody: PostV1NetworkRecipientCreatedCollaboratorBody,): Promise<undefined> => {
+export const postV1NetworkRecipientCreatedCollaborator = async (pathParams: {recipient: string, created: number}, postV1NetworkRecipientCreatedCollaboratorBody: PostV1NetworkRecipientCreatedCollaboratorBody,): Promise<PostV1NetworkRecipientCreatedCollaborator200 | PostV1NetworkRecipientCreatedCollaborator201> => {
   
-  return req<undefined>(postV1NetworkRecipientCreatedCollaboratorPath(pathParams), {
+  return req<PostV1NetworkRecipientCreatedCollaborator200 | PostV1NetworkRecipientCreatedCollaborator201>(postV1NetworkRecipientCreatedCollaboratorPath(pathParams), {
     data: postV1NetworkRecipientCreatedCollaboratorBody,
     protected: true
   });
@@ -101,7 +120,8 @@ export const postV1NetworkRecipientCreatedCollaboratorPath = (pathParams: {recip
 export const postV1Prompt = async (postV1PromptBody: PostV1PromptBody,): Promise<PostV1Prompt200> => {
   
   return req<PostV1Prompt200>(postV1PromptPath, {
-    data: postV1PromptBody
+    data: postV1PromptBody,
+    protected: true
   });
 }
 export const postV1PromptPath = `v1/prompt`
@@ -114,7 +134,8 @@ export const postV1PromptPath = `v1/prompt`
 export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheckBody,): Promise<PostV1PromptCheck200> => {
   
   return req<PostV1PromptCheck200>(postV1PromptCheckPath, {
-    data: postV1PromptCheckBody
+    data: postV1PromptCheckBody,
+    protected: true
   });
 }
 export const postV1PromptCheckPath = `v1/prompt/check`

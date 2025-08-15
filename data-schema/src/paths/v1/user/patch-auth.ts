@@ -3,6 +3,7 @@ import * as StatusCodes from "http-status-codes"
 const patchableAttributes = {
   name: {},
   namePreferred: {},
+  zip: {},
   // password: {},
   // passwordNew: {},
   // notifications: { removable: true, immutable: true },

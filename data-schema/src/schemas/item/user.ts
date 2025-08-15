@@ -7,7 +7,7 @@ export const publicData = {
   username: {},
   name: {},
   namePreferred: {},
-  address: {},
+  zip: {},
 } as const satisfies OA3.Properties
 
 export type PublicDataKeys = keyof typeof publicData

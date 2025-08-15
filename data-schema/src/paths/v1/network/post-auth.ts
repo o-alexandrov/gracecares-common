@@ -5,7 +5,15 @@ import * as items from "@gracecares-ai/data-schema/src/schemas/item"
 const commonSchema = {
   type: "object",
   properties: {
-    ...commonHelpers.pick(items.network.definition, ["userID", "created"]),
+    ...commonHelpers.pick(items.network.definition, ["created"]),
+  },
+  _dangerousUndocumentedProperties: {
+    careRecipient: {
+      type: "object",
+      required: true,
+      description: "Care recipient user's data",
+      properties: items.user.publicData,
+    },
   },
 } as const satisfies OA3.ResponseSchema
 
@@ -17,7 +25,7 @@ export const definition = {
       relationship: { required: true },
       name: { required: true },
       namePreferred: {},
-      address: {},
+      zip: {},
       notes: {},
     },
   },
