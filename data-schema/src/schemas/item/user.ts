@@ -3,6 +3,7 @@ const variant = `user` satisfies OA3.VariantOptions
 export const publicData = {
   id: { required: true },
   created: { variant: `seconds`, required: true },
+  networks: { required: true },
   phone: {},
   username: {},
   name: {},

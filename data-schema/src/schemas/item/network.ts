@@ -1,11 +1,7 @@
 const variant = `network` satisfies OA3.VariantOptions
 
 export const definition = {
-  userID: {
-    variant,
-    required: true,
-    descriptionAdditional: `This is a unique identifier. It's not a copy of another identifier. It's a completely independent identifier.`,
-  },
+  userID: { variant, required: true },
   caregiverID: { required: true },
   created: {
     variant: `seconds`,

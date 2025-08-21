@@ -268,10 +268,12 @@ const generateSwrHook = (
     `undefined`,
   )
 
+  const skipGeneration = true
   // Don't generate "use" hook if it doesn't return data (returns undefined)
   if (
     transformedSuccessType === `undefined` ||
-    transformedSuccessType.trim() === `undefined`
+    transformedSuccessType.trim() === `undefined` ||
+    skipGeneration
   ) {
     return ``
   }
@@ -317,15 +319,15 @@ export const generateSwr: ClientBuilder = (verbOptions, options) => {
 export const apiClientBuilder: ClientGeneratorsBuilder = {
   client: generateSwr,
   dependencies: () => [
-    {
-      exports: [
-        { name: `use`, values: true },
-        { name: `usePaginated`, values: true },
-        { name: `ConfigPaginated` },
-        { name: `ConfigNonPaginated` },
-      ],
-      dependency: `@gracecares-ai/frontend-toolkit/src/plugins/http`,
-    },
+    // {
+    //   exports: [
+    //     { name: `use`, values: true },
+    //     { name: `usePaginated`, values: true },
+    //     { name: `ConfigPaginated` },
+    //     { name: `ConfigNonPaginated` },
+    //   ],
+    //   dependency: `@gracecares-ai/frontend-toolkit/src/plugins/http`,
+    // },
     {
       exports: [{ name: `unknownToSk`, values: true }],
       dependency: `@gracecares-ai/data-schema/src/schemas/attribute/username`,

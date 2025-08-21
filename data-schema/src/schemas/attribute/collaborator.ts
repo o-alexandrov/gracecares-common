@@ -4,7 +4,10 @@ export const definition = {
   type: `object`,
   description: `Any additional information`,
   properties: {
-    userID: { variant: `generic`, required: true },
+    id: {
+      required: true,
+      descriptionAdditional: `The user's ID from \`user\` table`,
+    },
     notes: {
       descriptionAdditional: `Notes about the collaborator`,
     },

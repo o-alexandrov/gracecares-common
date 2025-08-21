@@ -7,6 +7,7 @@
  */
 import type {
   GetV1UserCheckPhoneParams,
+  ItemTask,
   PatchV1NetworkRecipientCreatedBody,
   PatchV1UserBody,
   PostV1File200,
@@ -35,7 +36,7 @@ import { queryString } from '../src/orval/params-serializer';
 export const postV1File = async (): Promise<PostV1File200> => {
   
   return req<PostV1File200>(postV1FilePath, {
-    
+    protected: true
   });
 }
 export const postV1FilePath = `v1/file`
@@ -48,7 +49,8 @@ export const postV1FilePath = `v1/file`
 export const postV1Msg = async (postV1MsgBody: PostV1MsgBody,): Promise<undefined> => {
   
   return req<undefined>(postV1MsgPath, {
-    data: postV1MsgBody
+    data: postV1MsgBody,
+    protected: true
   });
 }
 export const postV1MsgPath = `v1/msg`
@@ -139,6 +141,21 @@ export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheck
   });
 }
 export const postV1PromptCheckPath = `v1/prompt/check`
+
+
+
+/**
+ * @summary Get all tasks within a network
+ */
+export const getV1TaskRecipientCreated = async (pathParams: {recipient: string, created: number}): Promise<ItemTask[]> => {
+  
+  return req<ItemTask[]>(getV1TaskRecipientCreatedPath(pathParams), {
+    method: `GET`,
+    protected: true
+  });
+}
+export const getV1TaskRecipientCreatedPath = (pathParams: {recipient: string, created: number}) =>
+  `v1/task/${pathParams.recipient}/${pathParams.created}`
 
 
 
