@@ -7,14 +7,19 @@ export const setNamePostfix = <v extends string>(v: v) => `${v}ID` as const
 export const safeCharacters = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
 
 export const regex: DataSchema.ValidationRegExp[] = [
-  helpers.hasLength(nanoIdLength),
+  ...helpers.hasLengths(1, 200),
+
+  /**
+   * @todo add variant for task id and then uncomment below to use it for other ids
+   */
+  // helpers.hasLength(nanoIdLength),
 
   /**
    * we won't ever display "id" validation error, reasons:
    *   - to not disclose how we generate ids
    *   - because ids are generated, so only robots or malicious users would stumble upon this error
    */
-  { msg: ``, exp: /^[\w~.-]+$/ },
+  // { msg: ``, exp: /^[\w~.-]+$/ },
 ]
 
 export const definition = {

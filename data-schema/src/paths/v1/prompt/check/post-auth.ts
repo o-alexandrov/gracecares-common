@@ -5,18 +5,24 @@ import * as StatusCodes from "http-status-codes"
 export const definition = {
   summary: `Retrieve the LLM's summary`,
   requestBody: {
+    properties: {
+      ...commonHelpers.pick(items.network.definition, ["userID", "created"]),
+    },
     _dangerousUndocumentedProperties: {
       id: {
+        required: true,
         type: `string`,
         description: `Identifier of the LLM thread (required)`,
         example: `thread_1234567890abcdef`,
       },
       runId: {
+        required: true,
         type: `string`,
         description: `Identifier of the LLM run`,
         example: `run_1234567890abcdef`,
       },
       assistantId: {
+        required: true,
         type: `string`,
         description: `Identifier of the assistant`,
         example: `asst_1234567890abcdef`,
@@ -225,33 +231,19 @@ export const definition = {
             description: `Detailed prescription information`,
           },
           taskList: {
+            required: true,
             type: `array`,
+            description: `List of care coordination tasks with SMS reminders`,
             items: {
               type: `object`,
-              _dangerousUndocumentedProperties: {
-                taskName: {
-                  type: `string`,
-                  description: `Name of the care task`,
-                  example: `Give morning medication`,
-                },
-                scheduledDate: {
-                  type: `string`,
-                  description: `Scheduled date for task in YYYY-MM-DD format`,
-                  example: `2025-06-21`,
-                },
-                assignedTo: {
-                  type: `string`,
-                  description: `Name of person assigned to task`,
-                  example: `John Smith`,
-                },
-                smsMessage: {
-                  type: `string`,
-                  description: `SMS message for task reminder (≤160 chars)`,
-                  example: `Hi John, please give Mom her morning medication at 8am today. Thanks! 💊`,
-                },
-              },
+              properties: commonHelpers.pick(items.task.definition, [
+                "assigneeID",
+                "due",
+                "msg",
+                "label",
+                "created",
+              ]),
             },
-            description: `List of care coordination tasks with SMS reminders`,
           },
         },
       },

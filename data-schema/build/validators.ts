@@ -17,10 +17,13 @@ import {
 /**
  * @summary Send an SMS with directions
  */
+export const postV1MsgBodyIdRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+export const postV1MsgBodyUserIDRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+
 export const postV1MsgBody = zod.object({
-  "threadId": zod.string(),
-  "phoneNumber": zod.string(),
-  "message": zod.string()
+  "id": zod.string().regex(postV1MsgBodyIdRegExp),
+  "userID": zod.string().regex(postV1MsgBodyUserIDRegExp),
+  "created": zod.number()
 })
 
 
@@ -75,8 +78,8 @@ export const postV1NetworkRecipientCreatedCollaboratorBody = zod.object({
 /**
  * @summary Send data for a prompt
  */
-export const postV1PromptBodyUserIDRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
-export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{21}$)(?=^[\\w~.-]+$)');
+export const postV1PromptBodyUserIDRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+export const postV1PromptBodyIdRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
 
 export const postV1PromptBody = zod.object({
   "userID": zod.string().regex(postV1PromptBodyUserIDRegExp),
@@ -88,10 +91,14 @@ export const postV1PromptBody = zod.object({
 /**
  * @summary Retrieve the LLM's summary
  */
+export const postV1PromptCheckBodyUserIDRegExp = new RegExp('(?=^.{1,}$)(?=^.{0,200}$)');
+
 export const postV1PromptCheckBody = zod.object({
-  "id": zod.string().optional(),
-  "runId": zod.string().optional(),
-  "assistantId": zod.string().optional(),
+  "userID": zod.string().regex(postV1PromptCheckBodyUserIDRegExp),
+  "created": zod.number(),
+  "id": zod.string(),
+  "runId": zod.string(),
+  "assistantId": zod.string(),
   "fileId": zod.string().optional(),
   "waitForCompletion": zod.boolean().optional()
 })

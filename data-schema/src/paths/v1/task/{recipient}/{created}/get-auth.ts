@@ -1,5 +1,6 @@
 import * as StatusCodes from "http-status-codes"
 import * as items from "@gracecares-ai/data-schema/src/schemas/item"
+import * as commonHelpers from "@gracecares-ai/helpers"
 
 import * as pathParameters from "../../_path-parameters"
 
@@ -17,7 +18,16 @@ export const definition = {
       schema: {
         type: "array",
         items: {
-          $ref: `#/components/schemas/item_task`,
+          type: "object",
+          properties: items.task.definition,
+          _dangerousUndocumentedProperties: {
+            assignee: {
+              required: true,
+              type: "object",
+              description: "The user assigned to the task",
+              properties: items.user.publicData,
+            },
+          },
         },
       },
     },

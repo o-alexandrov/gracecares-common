@@ -1,6 +1,10 @@
 const variant = `task` satisfies OA3.VariantOptions
 
 export const definition = {
+  id: {
+    required: true,
+    descriptionAdditional: `Unique identifier within the network`,
+  },
   assigneeID: {
     required: true,
     descriptionAdditional: `User's identifier who needs to complete the task`,
@@ -20,4 +24,8 @@ export const definition = {
   },
   updated: { variant: `seconds` },
   done: { variant: `seconds` },
+  sent: {
+    variant: `seconds`,
+    descriptionAdditional: `The time when the message was sent`,
+  },
 } as const satisfies OA3.Properties

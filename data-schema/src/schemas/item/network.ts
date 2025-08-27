@@ -21,6 +21,7 @@ export const definition = {
     descriptionAdditional: `Indicator whether the network has been confirmed by the care recipient`,
     required: true,
   },
+  threadID: {},
   notes: {
     descriptionAdditional: `Notes about the care recipient`,
   },
