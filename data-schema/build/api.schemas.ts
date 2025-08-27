@@ -6,6 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 /**
+ * How to access the resource or service
+ * @pattern (?=^.{1,}$)(?=^.{0,500}$)
+ */
+export type Access = string;
+
+/**
  * Street address
  * @pattern (?=^.{0,}$)(?=^.{0,500}$)
  */
@@ -52,6 +58,36 @@ export type CaregiverID = string;
 export type CareNeeds = string[];
 
 /**
+ * Resource category:
+- `1` (dailyLiving)
+- `2` (respiteSupport)
+- `3` (socialEngagement)
+- `4` (legalFinancial)
+- `5` (safetyEmergency)
+- `6` (communityGroups)
+- `7` (transportation)
+- `8` (meals)
+- `9` (assistiveTech)
+- `10` (homeModifications)
+ */
+export type CategoryResource = typeof CategoryResource[keyof typeof CategoryResource];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CategoryResource = {
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_4: 4,
+  NUMBER_5: 5,
+  NUMBER_6: 6,
+  NUMBER_7: 7,
+  NUMBER_8: 8,
+  NUMBER_9: 9,
+  NUMBER_10: 10,
+} as const;
+
+/**
  * A short numeric code that is sent to recover.
  */
 export type CodeR = string;
@@ -81,6 +117,12 @@ export type Collaborators = Collaborator[];
  * Condition start date
  */
 export type ConditionStartDate = string;
+
+/**
+ * Value or benefit for specific health conditions
+ * @pattern (?=^.{1,}$)(?=^.{0,1000}$)
+ */
+export type ConditionValue = string;
 
 /**
  * Indicator whether a user has confirmed a specific action where this attribute is used
@@ -117,6 +159,20 @@ export const ConfirmedPhone = {
 } as const;
 
 /**
+ * Contact information
+ */
+export interface Contact {
+  phone?: Phone;
+  website?: Website;
+}
+
+/**
+ * Cost information and payment options
+ * @pattern (?=^.{1,}$)(?=^.{0,500}$)
+ */
+export type Cost = string;
+
+/**
  * Command to create
  */
 export type Create = boolean;
@@ -135,6 +191,12 @@ export type CreatedHours = number;
  * Timestamp in seconds
  */
 export type CreatedSeconds = number;
+
+/**
+ * Description of the resource or service
+ * @pattern (?=^.{1,}$)(?=^.{0,1000}$)
+ */
+export type Description = string;
 
 /**
  * Timestamp in days
@@ -165,6 +227,12 @@ export type DueHours = number;
  * Timestamp in seconds
  */
 export type DueSeconds = number;
+
+/**
+ * Eligibility requirements for the resource or service
+ * @pattern (?=^.{0,}$)(?=^.{0,500}$)
+ */
+export type Eligibility = string;
 
 /**
  * Email conforming to RFC 5322
@@ -240,6 +308,22 @@ export interface ItemNetwork {
   careNeeds?: CareNeeds;
   expectation?: Expectation;
   conditionStartDate?: ConditionStartDate;
+}
+
+export interface ItemResource {
+  /** Unique identifier within the network */
+  id: Id;
+  label: Label;
+  created: CreatedSeconds;
+  updated?: UpdatedSeconds;
+  organization: Organization;
+  description: Description;
+  category: CategoryResource;
+  access?: Access;
+  contact?: Contact;
+  cost?: Cost;
+  conditionValue?: ConditionValue;
+  eligibility?: Eligibility;
 }
 
 export interface ItemTask {
@@ -333,6 +417,12 @@ export type Notes = string;
  * Number of unread notifications
  */
 export type Notifications = number;
+
+/**
+ * Organization name or business name
+ * @pattern (?=^.{1,}$)(?=^.{0,300}$)
+ */
+export type Organization = string;
 
 /**
  * Directions (cursor) for the backend to select the next page data.
@@ -476,6 +566,12 @@ A user can still save their username with uppercase letters, but the case will b
  * @pattern (?=^.{1,}$)(?=^.{0,30}$)(?=^[\w\-.]+$)
  */
 export type Username = string;
+
+/**
+ * Website URL
+ * @pattern (?=^.{1,}$)(?=^.{0,500}$)
+ */
+export type Website = string;
 
 /**
  * ZIP code
@@ -767,6 +863,22 @@ export type PostV1PromptCheck422 = {
   expected: string;
   code: string;
   message: string;
+};
+
+export type GetV1ResourceRecipientCreated200Item = {
+  /** Unique identifier within the network */
+  id: Id;
+  label: Label;
+  created: CreatedSeconds;
+  updated?: UpdatedSeconds;
+  organization: Organization;
+  description: Description;
+  category: CategoryResource;
+  access?: Access;
+  contact?: Contact;
+  cost?: Cost;
+  conditionValue?: ConditionValue;
+  eligibility?: Eligibility;
 };
 
 /**

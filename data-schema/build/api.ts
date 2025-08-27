@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  GetV1ResourceRecipientCreated200Item,
   GetV1TaskRecipientCreated200Item,
   GetV1UserCheckPhoneParams,
   PatchV1NetworkRecipientCreatedBody,
@@ -141,6 +142,21 @@ export const postV1PromptCheck = async (postV1PromptCheckBody: PostV1PromptCheck
   });
 }
 export const postV1PromptCheckPath = `v1/prompt/check`
+
+
+
+/**
+ * @summary Get all resources within a network
+ */
+export const getV1ResourceRecipientCreated = async (pathParams: {recipient: string, created: number}): Promise<GetV1ResourceRecipientCreated200Item[]> => {
+  
+  return req<GetV1ResourceRecipientCreated200Item[]>(getV1ResourceRecipientCreatedPath(pathParams), {
+    method: `GET`,
+    protected: true
+  });
+}
+export const getV1ResourceRecipientCreatedPath = (pathParams: {recipient: string, created: number}) =>
+  `v1/resource/${pathParams.recipient}/${pathParams.created}`
 
 
 
