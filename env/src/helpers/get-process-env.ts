@@ -6,10 +6,45 @@ import { fromIni } from "@aws-sdk/credential-provider-ini"
 import type { AwsCredentialIdentity } from "@aws-sdk/types"
 import * as commonHelpers from "@gracecares-ai/helpers"
 import type * as TF from "type-fest"
+import * as fs from "node:fs"
+import * as path from "node:path"
 
 import { getDomain } from "./consts"
 import { AWSEnvVars, getAwsVars } from "./get-aws-vars"
 import { getLocalIpAddress } from "./get-local-ip-address"
+
+/**
+ * Finds the root path of the repo by looking for the nearest package.json with "workspaces" attribute
+ * @returns The root path of the repo or undefined if not found
+ */
+const findRepoRootPath = async (
+  startPath: string = process.cwd(),
+): Promise<string> => {
+  let currentPath = path.resolve(startPath)
+
+  while (currentPath !== path.dirname(currentPath)) {
+    // Stop when we reach the filesystem root
+    const packageJsonPath = path.join(currentPath, "package.json")
+
+    try {
+      if (fs.existsSync(packageJsonPath)) {
+        const packageJsonContent = fs.readFileSync(packageJsonPath, "utf-8")
+        const packageJson = JSON.parse(packageJsonContent)
+
+        if (packageJson.workspaces) {
+          return currentPath
+        }
+      }
+    } catch (error) {
+      // Continue searching if we can't read or parse the package.json
+    }
+
+    // Move up one directory
+    currentPath = path.dirname(currentPath)
+  }
+
+  throw new Error(`No package.json with "workspaces" found`)
+}
 
 type variants = TF.MergeExclusive<
   {
@@ -151,21 +186,21 @@ export const getProcessEnv = async (props: EnvProps) => {
     ...props.extraVars,
   } as const satisfies Record<string, string>
 
-  if (props.pathToSecrets) {
-    const pathExampleEnv = props.pathToSecrets.replace(
-      `/env.ts`,
-      `/env.example.ts`,
-    )
-    const pathToSecrets = process.env.CI ? pathExampleEnv : props.pathToSecrets
+  const hasEnvironmentSecrets = process.env.HAS_ENV_SECRETS
+  if (hasEnvironmentSecrets) {
+    const pathRepoRoot = await findRepoRootPath()
+    const pathEnv = path.join(pathRepoRoot, `env.ts`)
+    const pathExampleEnv = path.join(pathRepoRoot, `env.example.ts`)
+    const pathToSecrets = process.env.CI ? pathExampleEnv : pathEnv
 
     if (!process.env.CI) {
       const [isEnvExists, isExampleEnvExists] = await Promise.all([
-        commonHelpers.checkExists(props.pathToSecrets),
+        commonHelpers.checkExists(pathEnv),
         commonHelpers.checkExists(pathExampleEnv),
       ])
       if (!isEnvExists) {
         throw new Error(
-          `Create "${props.pathToSecrets}" file\nIt should export "env" object with all the keys from "${pathExampleEnv}"`,
+          `Create "${pathEnv}" file\nIt should export "env" object with all the keys from "${pathExampleEnv}"`,
         )
       }
       if (!isExampleEnvExists) {
