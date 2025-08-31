@@ -2,6 +2,29 @@ import * as items from "@gracecares-ai/data-schema/src/schemas/item"
 import * as commonHelpers from "@gracecares-ai/helpers"
 import * as StatusCodes from "http-status-codes"
 
+const threadRequest = {
+  _dangerousUndocumentedProperties: {
+    id: {
+      required: true,
+      type: `string`,
+      description: `Identifier of the LLM thread (required)`,
+      example: `thread_1234567890abcdef`,
+    },
+    runId: {
+      required: true,
+      type: `string`,
+      description: `Identifier of the LLM run`,
+      example: `run_1234567890abcdef`,
+    },
+    assistantId: {
+      required: true,
+      type: `string`,
+      description: `Identifier of the assistant`,
+      example: `asst_1234567890abcdef`,
+    },
+  },
+} satisfies OA3.Path["requestBody"]
+
 export const definition = {
   summary: `Retrieve the LLM's summary`,
   requestBody: {
@@ -9,24 +32,7 @@ export const definition = {
       ...commonHelpers.pick(items.network.definition, ["userID", "created"]),
     },
     _dangerousUndocumentedProperties: {
-      id: {
-        required: true,
-        type: `string`,
-        description: `Identifier of the LLM thread (required)`,
-        example: `thread_1234567890abcdef`,
-      },
-      runId: {
-        required: true,
-        type: `string`,
-        description: `Identifier of the LLM run`,
-        example: `run_1234567890abcdef`,
-      },
-      assistantId: {
-        required: true,
-        type: `string`,
-        description: `Identifier of the assistant`,
-        example: `asst_1234567890abcdef`,
-      },
+      ...threadRequest._dangerousUndocumentedProperties,
       fileId: {
         type: `string`,
         description: `Identifier of the uploaded file (if any)`,
@@ -35,6 +41,11 @@ export const definition = {
       waitForCompletion: {
         type: `boolean`,
         description: `Whether to wait for completion or return immediately`,
+      },
+      resources: {
+        type: `object`,
+        description: `Local resources identifiers`,
+        ...threadRequest,
       },
     },
   },

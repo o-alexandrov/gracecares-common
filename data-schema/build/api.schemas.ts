@@ -313,7 +313,6 @@ export interface ItemNetwork {
 export interface ItemResource {
   /** Unique identifier within the network */
   id: Id;
-  label: Label;
   created: CreatedSeconds;
   updated?: UpdatedSeconds;
   organization: Organization;
@@ -728,21 +727,47 @@ export type PostV1PromptBody = {
   id?: Id;
 };
 
+/**
+ * Local resources identifiers
+ */
+export type PostV1Prompt200Resources = {
+  /** Identifier of a thread */
+  id: Id;
+  /** Identifier of the prompt run */
+  runId: string;
+  /** Identifier of the assistant */
+  assistantId: string;
+};
+
 export type PostV1Prompt200 = {
   /** Identifier of a thread */
   id: Id;
   /** Identifier of the prompt run */
-  runId?: string;
+  runId: string;
   /** Identifier of the assistant */
-  assistantId?: string;
+  assistantId: string;
   /** Identifier of the uploaded file (if any) */
   fileId?: string;
+  /** Local resources identifiers */
+  resources?: PostV1Prompt200Resources;
 };
 
 export type PostV1Prompt422 = {
   expected: string;
   code: string;
   message: string;
+};
+
+/**
+ * Local resources identifiers
+ */
+export type PostV1PromptCheckBodyResources = {
+  /** Identifier of the LLM thread (required) */
+  id: string;
+  /** Identifier of the LLM run */
+  runId: string;
+  /** Identifier of the assistant */
+  assistantId: string;
 };
 
 export type PostV1PromptCheckBody = {
@@ -759,6 +784,8 @@ export type PostV1PromptCheckBody = {
   fileId?: string;
   /** Whether to wait for completion or return immediately */
   waitForCompletion?: boolean;
+  /** Local resources identifiers */
+  resources?: PostV1PromptCheckBodyResources;
 };
 
 /**
@@ -865,10 +892,9 @@ export type PostV1PromptCheck422 = {
   message: string;
 };
 
-export type GetV1ResourceRecipientCreated200Item = {
+export type GetV1ResourceRecipientCreated200ResourcesItem = {
   /** Unique identifier within the network */
   id: Id;
-  label: Label;
   created: CreatedSeconds;
   updated?: UpdatedSeconds;
   organization: Organization;
@@ -879,6 +905,27 @@ export type GetV1ResourceRecipientCreated200Item = {
   cost?: Cost;
   conditionValue?: ConditionValue;
   eligibility?: Eligibility;
+};
+
+/**
+ * Information about the care recipient
+ */
+export type GetV1ResourceRecipientCreated200CareRecipient = {
+  id: Id;
+  created: CreatedSeconds;
+  networks: Networks;
+  phone?: Phone;
+  username?: Username;
+  name?: Name;
+  namePreferred?: NamePreferred;
+  zip?: Zip;
+};
+
+export type GetV1ResourceRecipientCreated200 = {
+  /** List of resources within the network */
+  resources: GetV1ResourceRecipientCreated200ResourcesItem[];
+  /** Information about the care recipient */
+  careRecipient: GetV1ResourceRecipientCreated200CareRecipient;
 };
 
 /**

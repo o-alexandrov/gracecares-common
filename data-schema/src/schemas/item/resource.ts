@@ -5,7 +5,6 @@ export const definition = {
     required: true,
     descriptionAdditional: `Unique identifier within the network`,
   },
-  label: { required: true },
   created: { variant: `seconds`, required: true },
   updated: { variant: `seconds` },
   organization: { required: true },

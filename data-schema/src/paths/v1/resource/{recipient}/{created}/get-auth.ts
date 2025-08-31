@@ -16,10 +16,23 @@ export const definition = {
     [StatusCodes.OK]: {
       description: `Resources within the network`,
       schema: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: items.resource.definition,
+        type: "object",
+        _dangerousUndocumentedProperties: {
+          resources: {
+            required: true,
+            description: `List of resources within the network`,
+            type: "array",
+            items: {
+              type: "object",
+              properties: items.resource.definition,
+            },
+          },
+          careRecipient: {
+            required: true,
+            type: "object",
+            description: `Information about the care recipient`,
+            properties: items.user.publicData,
+          },
         },
       },
     },
