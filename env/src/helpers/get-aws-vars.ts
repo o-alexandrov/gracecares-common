@@ -15,7 +15,7 @@ export const awsAccountsIds = {
 
 export const setVars = <S extends stage>(stage: S) =>
   ({
-    region: `us-west-1`,
+    region: `us-east-1`,
     stage,
     profile: `${baseAwsProfile}${stage}` as const,
     accountId: awsAccountsIds[stage],
