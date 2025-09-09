@@ -2,30 +2,6 @@ import * as items from "@gracecares-ai/data-schema/src/schemas/item"
 import * as commonHelpers from "@gracecares-ai/helpers"
 import * as StatusCodes from "http-status-codes"
 
-const threadResponse = {
-  type: `object`,
-  properties: {
-    id: {
-      required: true,
-      descriptionAdditional: [`Identifier of a thread`],
-    },
-  },
-  _dangerousUndocumentedProperties: {
-    runId: {
-      required: true,
-      type: `string`,
-      description: `Identifier of the prompt run`,
-      example: `run_1234567890abcdef`,
-    },
-    assistantId: {
-      required: true,
-      type: `string`,
-      description: `Identifier of the assistant`,
-      example: `asst_1234567890abcdef`,
-    },
-  },
-} satisfies OA3.ResponseSchema
-
 export const definition = {
   summary: `Send data for a prompt`,
   requestBody: {
@@ -42,17 +18,30 @@ export const definition = {
   responses: {
     [StatusCodes.OK]: {
       schema: {
-        ...threadResponse,
+        type: `object`,
+        properties: {
+          id: {
+            required: true,
+            descriptionAdditional: [`Identifier of a thread`],
+          },
+        },
         _dangerousUndocumentedProperties: {
-          ...threadResponse._dangerousUndocumentedProperties,
+          runId: {
+            required: true,
+            type: `string`,
+            description: `Identifier of the prompt run`,
+            example: `run_1234567890abcdef`,
+          },
+          assistantId: {
+            required: true,
+            type: `string`,
+            description: `Identifier of the assistant`,
+            example: `asst_1234567890abcdef`,
+          },
           fileId: {
             type: `string`,
             description: `Identifier of the uploaded file (if any)`,
             example: `file_1234567890abcdef`,
-          },
-          resources: {
-            description: `Local resources identifiers`,
-            ...threadResponse,
           },
         },
       },

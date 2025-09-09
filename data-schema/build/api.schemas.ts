@@ -727,18 +727,6 @@ export type PostV1PromptBody = {
   id?: Id;
 };
 
-/**
- * Local resources identifiers
- */
-export type PostV1Prompt200Resources = {
-  /** Identifier of a thread */
-  id: Id;
-  /** Identifier of the prompt run */
-  runId: string;
-  /** Identifier of the assistant */
-  assistantId: string;
-};
-
 export type PostV1Prompt200 = {
   /** Identifier of a thread */
   id: Id;
@@ -748,26 +736,12 @@ export type PostV1Prompt200 = {
   assistantId: string;
   /** Identifier of the uploaded file (if any) */
   fileId?: string;
-  /** Local resources identifiers */
-  resources?: PostV1Prompt200Resources;
 };
 
 export type PostV1Prompt422 = {
   expected: string;
   code: string;
   message: string;
-};
-
-/**
- * Local resources identifiers
- */
-export type PostV1PromptCheckBodyResources = {
-  /** Identifier of the LLM thread (required) */
-  id: string;
-  /** Identifier of the LLM run */
-  runId: string;
-  /** Identifier of the assistant */
-  assistantId: string;
 };
 
 export type PostV1PromptCheckBody = {
@@ -784,8 +758,6 @@ export type PostV1PromptCheckBody = {
   fileId?: string;
   /** Whether to wait for completion or return immediately */
   waitForCompletion?: boolean;
-  /** Local resources identifiers */
-  resources?: PostV1PromptCheckBodyResources;
 };
 
 /**

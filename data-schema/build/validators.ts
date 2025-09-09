@@ -100,12 +100,7 @@ export const postV1PromptCheckBody = zod.object({
   "runId": zod.string(),
   "assistantId": zod.string(),
   "fileId": zod.string().optional(),
-  "waitForCompletion": zod.boolean().optional(),
-  "resources": zod.object({
-  "id": zod.string(),
-  "runId": zod.string(),
-  "assistantId": zod.string()
-}).optional()
+  "waitForCompletion": zod.boolean().optional()
 })
 
 
