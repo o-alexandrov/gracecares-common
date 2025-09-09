@@ -16,3 +16,9 @@ export const httpLink =
 export const httpProtocol = /^(https?:\/\/)?/i
 
 export const httpProtocolOrOptionalEnding = /(^https?:\/\/|\/$)/gi
+
+/**
+ * @see https://stackoverflow.com/a/20084661/4122857
+ *   - Google's Lighthouse bot has a unique identifier
+ */
+export const crawler = /bot|crawler|spider|robot|crawling|lighthouse/i
