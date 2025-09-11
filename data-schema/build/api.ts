@@ -9,6 +9,7 @@ import type {
   GetV1ResourceRecipientCreated200,
   GetV1TaskRecipientCreated200Item,
   GetV1UserCheckPhoneParams,
+  GetV1UserWebauthn200,
   PatchV1NetworkRecipientCreatedBody,
   PatchV1UserBody,
   PostV1File200,
@@ -227,6 +228,20 @@ export const postV1UserVerifyConfirm = async (postV1UserVerifyConfirmBody: PostV
   });
 }
 export const postV1UserVerifyConfirmPath = `v1/user/verify-confirm`
+
+
+
+/**
+ * @summary Generate WebAuthn challenge for user authentication or registration
+ */
+export const getV1UserWebauthn = async (): Promise<GetV1UserWebauthn200> => {
+  
+  return req<GetV1UserWebauthn200>(getV1UserWebauthnPath, {
+    method: `GET`,
+    protected: true
+  });
+}
+export const getV1UserWebauthnPath = `v1/user/webauthn`
 
 
 

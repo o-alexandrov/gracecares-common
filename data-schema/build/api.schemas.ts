@@ -277,6 +277,50 @@ export type FromHours = number;
 export type FromSeconds = number;
 
 /**
+ * Credential type
+ */
+export type GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItemType = typeof GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItemType[keyof typeof GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItemType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItemType = {
+  'public-key': 'public-key',
+} as const;
+
+export type GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItem = {
+  /** WebAuthn credential ID */
+  id: string;
+  /** Credential type */
+  type: GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItemType;
+};
+
+export interface GetV1UserWebauthnForUsersWithExistingPasskeys {
+  /** Base64url-encoded cryptographically secure random challenge (32 bytes) */
+  challenge: string;
+  /** List of allowed credentials for authentication */
+  allowCredentials: GetV1UserWebauthnForUsersWithExistingPasskeysAllowCredentialsItem[];
+}
+
+/**
+ * User information for registration
+ */
+export type GetV1UserWebauthnForUsersWithoutExistingPasskeysUser = {
+  /** Base64url-encoded user ID */
+  id: string;
+  /** User's email, phone, or username for display */
+  name: string;
+  /** User's preferred display name */
+  displayName: string;
+};
+
+export interface GetV1UserWebauthnForUsersWithoutExistingPasskeys {
+  /** Base64url-encoded cryptographically secure random challenge (32 bytes) */
+  challenge: string;
+  /** User information for registration */
+  user: GetV1UserWebauthnForUsersWithoutExistingPasskeysUser;
+}
+
+/**
  * Health condition description
  * @pattern (?=^.{1,}$)(?=^.{0,1000}$)
  */
@@ -352,6 +396,7 @@ export interface ItemUser {
   name?: Name;
   namePreferred?: NamePreferred;
   zip?: Zip;
+  webauthnID?: WebauthnID;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -565,6 +610,11 @@ A user can still save their username with uppercase letters, but the case will b
  * @pattern (?=^.{1,}$)(?=^.{0,30}$)(?=^[\w\-.]+$)
  */
 export type Username = string;
+
+/**
+ * WebAuthn credential ID - a unique identifier for a WebAuthn credential
+ */
+export type WebauthnID = string;
 
 /**
  * Website URL
@@ -980,6 +1030,7 @@ export type PostV1UserVerifyConfirm200User = {
   name?: Name;
   namePreferred?: NamePreferred;
   zip?: Zip;
+  webauthnID?: WebauthnID;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -1002,4 +1053,6 @@ export type PostV1UserVerifyConfirm422 = {
   code: string;
   message: string;
 };
+
+export type GetV1UserWebauthn200 = GetV1UserWebauthnForUsersWithExistingPasskeys & {user?: never} | GetV1UserWebauthnForUsersWithoutExistingPasskeys & {allowCredentials?: never};
 
