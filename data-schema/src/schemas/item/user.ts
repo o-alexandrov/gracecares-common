@@ -15,6 +15,7 @@ export type PublicDataKeys = keyof typeof publicData
 
 const privateData = {
   webauthnID: {},
+  webauthnPublicKey: {},
   confirmedPhone: {},
   email: {},
   noP: {},

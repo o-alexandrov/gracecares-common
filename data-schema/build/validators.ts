@@ -139,3 +139,27 @@ export const postV1UserVerifyConfirmBody = zod.object({
 })
 
 
+/**
+ * @summary Validate and register a new WebAuthn credential for the user
+ */
+export const postV1UserWebauthnBody = zod.object({
+  "webauthnRegistration": zod.object({
+  "id": zod.string(),
+  "rawId": zod.string(),
+  "response": zod.object({
+  "attestationObject": zod.string(),
+  "clientDataJSON": zod.string(),
+  "transports": zod.array(zod.enum(['usb', 'nfc', 'ble', 'hybrid', 'internal'])).optional(),
+  "publicKeyAlgorithm": zod.number().optional(),
+  "publicKey": zod.string().optional(),
+  "authenticatorData": zod.string().optional()
+}),
+  "type": zod.enum(['public-key']),
+  "clientExtensionResults": zod.object({
+
+}).optional(),
+  "authenticatorAttachment": zod.enum(['platform', 'cross-platform']).optional()
+})
+})
+
+

@@ -397,6 +397,7 @@ export interface ItemUser {
   namePreferred?: NamePreferred;
   zip?: Zip;
   webauthnID?: WebauthnID;
+  webauthnPublicKey?: WebauthnPublicKey;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -615,6 +616,87 @@ export type Username = string;
  * WebAuthn credential ID - a unique identifier for a WebAuthn credential
  */
 export type WebauthnID = string;
+
+/**
+ * WebAuthn public key - a public key associated with a WebAuthn credential
+ */
+export type WebauthnPublicKey = string;
+
+export type WebauthnRegistrationResponseTransportsItem = typeof WebauthnRegistrationResponseTransportsItem[keyof typeof WebauthnRegistrationResponseTransportsItem];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WebauthnRegistrationResponseTransportsItem = {
+  usb: 'usb',
+  nfc: 'nfc',
+  ble: 'ble',
+  hybrid: 'hybrid',
+  internal: 'internal',
+} as const;
+
+/**
+ * Authenticator attestation response
+ */
+export type WebauthnRegistrationResponse = {
+  /** Base64URL-encoded attestation object containing authenticator data and attestation statement */
+  attestationObject: string;
+  /** Base64URL-encoded client data JSON */
+  clientDataJSON: string;
+  /** List of transport methods supported by the authenticator */
+  transports?: WebauthnRegistrationResponseTransportsItem[];
+  /** COSE algorithm identifier for the credential public key */
+  publicKeyAlgorithm?: number;
+  /** Raw public key (deprecated - use attestationObject instead) */
+  publicKey?: string;
+  /** Base64URL-encoded authenticator data */
+  authenticatorData?: string;
+};
+
+/**
+ * Credential type - always "public-key" for WebAuthn
+ */
+export type WebauthnRegistrationType = typeof WebauthnRegistrationType[keyof typeof WebauthnRegistrationType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WebauthnRegistrationType = {
+  'public-key': 'public-key',
+} as const;
+
+/**
+ * Results of any WebAuthn extensions that were processed
+ */
+export type WebauthnRegistrationClientExtensionResults = { [key: string]: unknown };
+
+/**
+ * How the authenticator is attached to the client
+ */
+export type WebauthnRegistrationAuthenticatorAttachment = typeof WebauthnRegistrationAuthenticatorAttachment[keyof typeof WebauthnRegistrationAuthenticatorAttachment];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WebauthnRegistrationAuthenticatorAttachment = {
+  platform: 'platform',
+  'cross-platform': 'cross-platform',
+} as const;
+
+/**
+ * WebAuthn registration response containing the credential information and attestation data
+ */
+export interface WebauthnRegistration {
+  /** Base64URL-encoded credential ID */
+  id: string;
+  /** Base64URL-encoded raw credential ID (same as id) */
+  rawId: string;
+  /** Authenticator attestation response */
+  response: WebauthnRegistrationResponse;
+  /** Credential type - always "public-key" for WebAuthn */
+  type: WebauthnRegistrationType;
+  /** Results of any WebAuthn extensions that were processed */
+  clientExtensionResults?: WebauthnRegistrationClientExtensionResults;
+  /** How the authenticator is attached to the client */
+  authenticatorAttachment?: WebauthnRegistrationAuthenticatorAttachment;
+}
 
 /**
  * Website URL
@@ -1031,6 +1113,7 @@ export type PostV1UserVerifyConfirm200User = {
   namePreferred?: NamePreferred;
   zip?: Zip;
   webauthnID?: WebauthnID;
+  webauthnPublicKey?: WebauthnPublicKey;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -1055,4 +1138,14 @@ export type PostV1UserVerifyConfirm422 = {
 };
 
 export type GetV1UserWebauthn200 = GetV1UserWebauthnForUsersWithExistingPasskeys & {user?: never} | GetV1UserWebauthnForUsersWithoutExistingPasskeys & {allowCredentials?: never};
+
+export type PostV1UserWebauthnBody = {
+  webauthnRegistration: WebauthnRegistration;
+};
+
+export type PostV1UserWebauthn422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
 

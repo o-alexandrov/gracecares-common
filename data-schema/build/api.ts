@@ -26,7 +26,8 @@ import type {
   PostV1PromptCheckBody,
   PostV1UserVerifyBody,
   PostV1UserVerifyConfirm200,
-  PostV1UserVerifyConfirmBody
+  PostV1UserVerifyConfirmBody,
+  PostV1UserWebauthnBody
 } from './api.schemas';
 
 import { req } from '../src/orval/fetch';
@@ -242,6 +243,20 @@ export const getV1UserWebauthn = async (): Promise<GetV1UserWebauthn200> => {
   });
 }
 export const getV1UserWebauthnPath = `v1/user/webauthn`
+
+
+
+/**
+ * @summary Validate and register a new WebAuthn credential for the user
+ */
+export const postV1UserWebauthn = async (postV1UserWebauthnBody: PostV1UserWebauthnBody,): Promise<undefined> => {
+  
+  return req<undefined>(postV1UserWebauthnPath, {
+    data: postV1UserWebauthnBody,
+    protected: true
+  });
+}
+export const postV1UserWebauthnPath = `v1/user/webauthn`
 
 
 
