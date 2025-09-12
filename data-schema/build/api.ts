@@ -27,7 +27,10 @@ import type {
   PostV1UserVerifyBody,
   PostV1UserVerifyConfirm200,
   PostV1UserVerifyConfirmBody,
-  PostV1UserWebauthnBody
+  PostV1UserWebauthnAuthentication200,
+  PostV1UserWebauthnAuthenticationBody,
+  PostV1UserWebauthnRegistration200,
+  PostV1UserWebauthnRegistrationBody
 } from './api.schemas';
 
 import { req } from '../src/orval/fetch';
@@ -247,16 +250,30 @@ export const getV1UserWebauthnPath = `v1/user/webauthn`
 
 
 /**
- * @summary Validate and register a new WebAuthn credential for the user
+ * @summary Validate an existing WebAuthn credentials for the user and authenticate user 
  */
-export const postV1UserWebauthn = async (postV1UserWebauthnBody: PostV1UserWebauthnBody,): Promise<undefined> => {
+export const postV1UserWebauthnAuthentication = async (postV1UserWebauthnAuthenticationBody: PostV1UserWebauthnAuthenticationBody,): Promise<PostV1UserWebauthnAuthentication200> => {
   
-  return req<undefined>(postV1UserWebauthnPath, {
-    data: postV1UserWebauthnBody,
+  return req<PostV1UserWebauthnAuthentication200>(postV1UserWebauthnAuthenticationPath, {
+    data: postV1UserWebauthnAuthenticationBody,
     protected: true
   });
 }
-export const postV1UserWebauthnPath = `v1/user/webauthn`
+export const postV1UserWebauthnAuthenticationPath = `v1/user/webauthn/authentication`
+
+
+
+/**
+ * @summary Validate a new WebAuthn credentials for the user and store it in the database
+ */
+export const postV1UserWebauthnRegistration = async (postV1UserWebauthnRegistrationBody: PostV1UserWebauthnRegistrationBody,): Promise<PostV1UserWebauthnRegistration200> => {
+  
+  return req<PostV1UserWebauthnRegistration200>(postV1UserWebauthnRegistrationPath, {
+    data: postV1UserWebauthnRegistrationBody,
+    protected: true
+  });
+}
+export const postV1UserWebauthnRegistrationPath = `v1/user/webauthn/registration`
 
 
 

@@ -140,9 +140,31 @@ export const postV1UserVerifyConfirmBody = zod.object({
 
 
 /**
- * @summary Validate and register a new WebAuthn credential for the user
+ * @summary Validate an existing WebAuthn credentials for the user and authenticate user 
  */
-export const postV1UserWebauthnBody = zod.object({
+export const postV1UserWebauthnAuthenticationBody = zod.object({
+  "webauthnAuthentication": zod.object({
+  "id": zod.string(),
+  "rawId": zod.string(),
+  "response": zod.object({
+  "authenticatorData": zod.string(),
+  "clientDataJSON": zod.string(),
+  "signature": zod.string(),
+  "userHandle": zod.string()
+}),
+  "type": zod.enum(['public-key']),
+  "clientExtensionResults": zod.object({
+
+}).optional(),
+  "authenticatorAttachment": zod.enum(['platform', 'cross-platform']).optional()
+})
+})
+
+
+/**
+ * @summary Validate a new WebAuthn credentials for the user and store it in the database
+ */
+export const postV1UserWebauthnRegistrationBody = zod.object({
   "webauthnRegistration": zod.object({
   "id": zod.string(),
   "rawId": zod.string(),

@@ -1,4 +1,3 @@
-import * as attr from "@gracecares-ai/data-schema/src/schemas/attribute"
 import * as StatusCodes from "http-status-codes"
 
 export const definition = {
@@ -37,7 +36,7 @@ export const definition = {
                       required: true,
                       type: `string`,
                       description: `WebAuthn credential ID`,
-                      example: attr.webauthnID.definition.example,
+                      example: `CaSKxtuWeiIWvSPu3lUZlxueNKw`,
                     },
                     type: {
                       required: true,

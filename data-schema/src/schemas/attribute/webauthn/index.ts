@@ -1,3 +1,2 @@
-export * as webauthnID from "./id"
-export * as webauthnPublicKey from "./public-key"
+export * as webauthnAuthentication from "./authentication"
 export * as webauthnRegistration from "./registration"

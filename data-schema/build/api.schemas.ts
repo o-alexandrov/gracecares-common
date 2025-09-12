@@ -396,8 +396,6 @@ export interface ItemUser {
   name?: Name;
   namePreferred?: NamePreferred;
   zip?: Zip;
-  webauthnID?: WebauthnID;
-  webauthnPublicKey?: WebauthnPublicKey;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -613,14 +611,64 @@ A user can still save their username with uppercase letters, but the case will b
 export type Username = string;
 
 /**
- * WebAuthn credential ID - a unique identifier for a WebAuthn credential
+ * Authenticator assertion response
  */
-export type WebauthnID = string;
+export type WebauthnAuthenticationResponse = {
+  /** Base64URL-encoded authenticator data */
+  authenticatorData: string;
+  /** Base64URL-encoded client data JSON */
+  clientDataJSON: string;
+  /** Base64URL-encoded signature over the authenticator data and client data hash */
+  signature: string;
+  /** Base64URL-encoded user handle (user ID) - may be null for some authenticators */
+  userHandle: string;
+};
 
 /**
- * WebAuthn public key - a public key associated with a WebAuthn credential
+ * Credential type - always "public-key" for WebAuthn
  */
-export type WebauthnPublicKey = string;
+export type WebauthnAuthenticationType = typeof WebauthnAuthenticationType[keyof typeof WebauthnAuthenticationType];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WebauthnAuthenticationType = {
+  'public-key': 'public-key',
+} as const;
+
+/**
+ * Results of any WebAuthn extensions that were processed
+ */
+export type WebauthnAuthenticationClientExtensionResults = { [key: string]: unknown };
+
+/**
+ * How the authenticator is attached to the client device
+ */
+export type WebauthnAuthenticationAuthenticatorAttachment = typeof WebauthnAuthenticationAuthenticatorAttachment[keyof typeof WebauthnAuthenticationAuthenticatorAttachment];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WebauthnAuthenticationAuthenticatorAttachment = {
+  platform: 'platform',
+  'cross-platform': 'cross-platform',
+} as const;
+
+/**
+ * Response from WebAuthn authentication (startAuthentication) containing the credential information and assertion data. We use library @simplewebauthn/browser
+ */
+export interface WebauthnAuthentication {
+  /** Base64URL-encoded credential ID */
+  id: string;
+  /** Base64URL-encoded raw credential ID (same as id) */
+  rawId: string;
+  /** Authenticator assertion response */
+  response: WebauthnAuthenticationResponse;
+  /** Credential type - always "public-key" for WebAuthn */
+  type: WebauthnAuthenticationType;
+  /** Results of any WebAuthn extensions that were processed */
+  clientExtensionResults?: WebauthnAuthenticationClientExtensionResults;
+  /** How the authenticator is attached to the client device */
+  authenticatorAttachment?: WebauthnAuthenticationAuthenticatorAttachment;
+}
 
 export type WebauthnRegistrationResponseTransportsItem = typeof WebauthnRegistrationResponseTransportsItem[keyof typeof WebauthnRegistrationResponseTransportsItem];
 
@@ -669,7 +717,7 @@ export const WebauthnRegistrationType = {
 export type WebauthnRegistrationClientExtensionResults = { [key: string]: unknown };
 
 /**
- * How the authenticator is attached to the client
+ * How the authenticator is attached to the client device
  */
 export type WebauthnRegistrationAuthenticatorAttachment = typeof WebauthnRegistrationAuthenticatorAttachment[keyof typeof WebauthnRegistrationAuthenticatorAttachment];
 
@@ -681,7 +729,7 @@ export const WebauthnRegistrationAuthenticatorAttachment = {
 } as const;
 
 /**
- * WebAuthn registration response containing the credential information and attestation data
+ * Response from "startRegistration" containing the credential information and attestation data. We use library @simplewebauthn/browser
  */
 export interface WebauthnRegistration {
   /** Base64URL-encoded credential ID */
@@ -694,7 +742,7 @@ export interface WebauthnRegistration {
   type: WebauthnRegistrationType;
   /** Results of any WebAuthn extensions that were processed */
   clientExtensionResults?: WebauthnRegistrationClientExtensionResults;
-  /** How the authenticator is attached to the client */
+  /** How the authenticator is attached to the client device */
   authenticatorAttachment?: WebauthnRegistrationAuthenticatorAttachment;
 }
 
@@ -1112,8 +1160,6 @@ export type PostV1UserVerifyConfirm200User = {
   name?: Name;
   namePreferred?: NamePreferred;
   zip?: Zip;
-  webauthnID?: WebauthnID;
-  webauthnPublicKey?: WebauthnPublicKey;
   confirmedPhone?: ConfirmedPhone;
   email?: Email;
   noP?: NoP;
@@ -1139,11 +1185,77 @@ export type PostV1UserVerifyConfirm422 = {
 
 export type GetV1UserWebauthn200 = GetV1UserWebauthnForUsersWithExistingPasskeys & {user?: never} | GetV1UserWebauthnForUsersWithoutExistingPasskeys & {allowCredentials?: never};
 
-export type PostV1UserWebauthnBody = {
+export type PostV1UserWebauthnAuthenticationBody = {
+  webauthnAuthentication: WebauthnAuthentication;
+};
+
+/**
+ * User data, with private data included
+ */
+export type PostV1UserWebauthnAuthentication200User = {
+  id: Id;
+  created: CreatedSeconds;
+  networks: Networks;
+  phone?: Phone;
+  username?: Username;
+  name?: Name;
+  namePreferred?: NamePreferred;
+  zip?: Zip;
+  confirmedPhone?: ConfirmedPhone;
+  email?: Email;
+  noP?: NoP;
+  /** Represents when the user will be automatically removed.
+
+
+A user can request account & data removal
+- when we receive such request, our backend adds `ttl` attribute for automated removal a week later */
+  ttl?: TtlHours;
+};
+
+export type PostV1UserWebauthnAuthentication200 = {
+  /** User data, with private data included */
+  user: PostV1UserWebauthnAuthentication200User;
+};
+
+export type PostV1UserWebauthnAuthentication422 = {
+  expected: string;
+  code: string;
+  message: string;
+};
+
+export type PostV1UserWebauthnRegistrationBody = {
   webauthnRegistration: WebauthnRegistration;
 };
 
-export type PostV1UserWebauthn422 = {
+/**
+ * User data, with private data included
+ */
+export type PostV1UserWebauthnRegistration200User = {
+  id: Id;
+  created: CreatedSeconds;
+  networks: Networks;
+  phone?: Phone;
+  username?: Username;
+  name?: Name;
+  namePreferred?: NamePreferred;
+  zip?: Zip;
+  confirmedPhone?: ConfirmedPhone;
+  email?: Email;
+  noP?: NoP;
+  /** Represents when the user will be automatically removed.
+
+
+A user can request account & data removal
+- when we receive such request, our backend adds `ttl` attribute for automated removal a week later */
+  ttl?: TtlHours;
+};
+
+export type PostV1UserWebauthnRegistration200 = {
+  /** User data, with private data included */
+  user: PostV1UserWebauthnRegistration200User;
+};
+
+export type PostV1UserWebauthnRegistration422 = {
   expected: string;
   code: string;
   message: string;
